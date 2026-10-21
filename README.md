@@ -1,7 +1,7 @@
 # AIG course materials
 
 The public site of the Autonomous Intelligence Group courses — lecture slides, recordings,
-registration: **https://olehsamoilenko.github.io/aig-materials/**
+registration: **https://autonomous-intelligence-group.github.io/**
 
 | URL | Page |
 |---|---|
@@ -80,6 +80,7 @@ python3 -m http.server 8000 -d docs       # http://localhost:8000/ — Ctrl+C to
 | `slides/<course>/` | The lecture PDFs |
 | `templates/` | `courses.html` (all courses) and `course.html` (one course) |
 | `assets/` | `style.css` and the logos, copied to the site root |
+| `assets/logos/` | `logo` and `logo-text` on a transparent background, as SVG and PNG (4× the original size) |
 | `build.py` | Fills the templates → `docs/`. Python 3, standard library only |
 | `docs/` | The built site, as published — never edit by hand |
 | `CLAUDE.md` | Conventions for an AI agent working in this repo |

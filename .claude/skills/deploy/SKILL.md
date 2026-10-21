@@ -132,4 +132,4 @@ git pull --rebase && git push
 
 Reply with: the entry (title, sub, topics), the video (id, position) or that there is none yet,
 the commit, and the page — live about a minute after the push:
-`https://olehsamoilenko.github.io/aig-materials/course/<slug>/`.
+`https://autonomous-intelligence-group.github.io/course/<slug>/`.

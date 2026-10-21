@@ -1,6 +1,6 @@
 # CLAUDE.md — aig-materials
 
-The public site of the Autonomous Intelligence Group courses: https://olehsamoilenko.github.io/aig-materials/.
+The public site of the Autonomous Intelligence Group courses: https://autonomous-intelligence-group.github.io/.
 Readers are students and applicants. How to add a lecture, preview and deploy is in
 [README.md](README.md) — read it first; this file is what an agent must also keep in mind.
 
@@ -20,7 +20,10 @@ Python 3, standard library only.
 | `/course/intro/` | Introduction to Autonomous Systems |
 | `/logo.png`, `/logo-text.png` | Hot-linked by the starter repos' READMEs — never rename or move |
 
-URLs are public and linked from elsewhere: do not rename slugs or paths without asking.
+URLs are public and linked from elsewhere: do not rename slugs or paths without asking. The old
+address `olehsamoilenko.github.io/aig-materials/` (until 2026-10-21) still works through the repo
+`olehsamoilenko/olehsamoilenko.github.io`: it redirects old links to the same path here and keeps
+copies of both logos, which Lab 1 READMEs still embed from it.
 
 Adding a lecture: the `deploy` skill (`.claude/skills/deploy/`) — fill, build, commit and push
 (the push deploys).
