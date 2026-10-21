@@ -19,12 +19,13 @@ source folder. Python 3, standard library only.
 | `/courses/` | All courses |
 | `/course/engineering/` | Autonomous Robotic Systems Engineering |
 | `/course/intro/` | Introduction to Autonomous Systems |
-| `/logo.png`, `/logo-text.png` | Hot-linked by the starter repos' READMEs — never rename or move |
+| `/logo.svg`, `/logo-text.svg`, `/logo.png`, `/logo-text.png` | The logos, transparent (PNG at 4×), each stored once in `assets/` — other repos may embed them: never rename or move |
 
 URLs are public and linked from elsewhere: do not rename slugs or paths without asking. The old
 address `olehsamoilenko.github.io/aig-materials/` (until 2026-10-21) still works through the repo
 `olehsamoilenko/olehsamoilenko.github.io`: it redirects old links to the same path here and keeps
-copies of both logos, which Lab 1 READMEs still embed from it.
+copies of the old logos (PNG on a white ground) — the Lab 1 READMEs, the template and the
+students' copies, embed `logo-text.png` from there.
 
 Adding a lecture: the `deploy` skill (`.claude/skills/deploy/`) — fill, build, commit and push
 (the push deploys).

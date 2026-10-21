@@ -9,7 +9,7 @@ registration: **https://autonomous-intelligence-group.github.io/**
 | `/courses/` | All courses |
 | `/course/engineering/` | Autonomous Robotic Systems Engineering |
 | `/course/intro/` | Introduction to Autonomous Systems |
-| `/logo.png`, `/logo-text.png` | The AIG mark and wordmark — other repos hot-link them, keep the names |
+| `/logo.svg`, `/logo-text.svg`, `/logo.png`, `/logo-text.png` | The AIG mark and wordmark on a transparent ground (PNG at 4×) — other repos may embed them, keep the names |
 
 **Deploying is pushing.** On every push to `main`, GitHub Actions runs [`build.py`](build.py)
 and publishes the site it builds — about a minute. Each PDF and logo is stored once, in
@@ -80,8 +80,7 @@ Both build into a temporary folder and delete it afterwards, so the project gets
 | `courses.json` | Everything the site shows |
 | `slides/<course>/` | The lecture PDFs |
 | `templates/` | `courses.html` (all courses) and `course.html` (one course) |
-| `assets/` | `style.css` and the logos, copied to the site root |
-| `assets/logos/` | `logo` and `logo-text` on a transparent background, as SVG and PNG (4× the original size) |
+| `assets/` | `style.css` and the logos — `logo` (the mark) and `logo-text` (the wordmark) on a transparent ground, as SVG and PNG (4×) — copied to the site root; the favicon is made from `logo.svg` |
 | `build.py` | Fills the templates → the site. Python 3, standard library only |
 | `.github/workflows/deploy.yml` | On every push to `main`: `build.py --out _site`, then publishes `_site/` |
 | `CLAUDE.md` | Conventions for an AI agent working in this repo |
@@ -101,6 +100,6 @@ Both build into a temporary folder and delete it afterwards, so the project gets
   silently deploys nothing — the site stays at its last deploy.
 - **The old address**, `https://olehsamoilenko.github.io/aig-materials/` (until 2026-10-21), is
   served by [`olehsamoilenko/olehsamoilenko.github.io`](https://github.com/olehsamoilenko/olehsamoilenko.github.io):
-  every old link redirects to the same path here, and it keeps copies of `logo.png` and
-  `logo-text.png`, which the Lab 1 READMEs embed. Keep that repo, and never create one named
-  `aig-materials` in that account — it would take the old address over.
+  every old link redirects to the same path here, and it keeps copies of the old `logo.png` and
+  `logo-text.png` (on a white ground), which the Lab 1 READMEs embed. Keep that repo, and never
+  create one named `aig-materials` in that account — it would take the old address over.

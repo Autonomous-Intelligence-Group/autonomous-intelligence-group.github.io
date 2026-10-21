@@ -21,7 +21,6 @@
   --fg-3: var(--gray-500);
   --rule: var(--gray-200);
   --ink: var(--black);          /* borders and shadows of controls */
-  --logo-blend: multiply;       /* hides the logo's white ground */
   --logo-filter: none;
   --live: #15803D;              /* the only colour on the site: "ongoing" */
 }
@@ -33,7 +32,6 @@
     --fg-3: var(--gray-400);
     --rule: var(--gray-800);
     --ink: var(--gray-50);
-    --logo-blend: screen;
     --logo-filter: invert(1);
     --live: #4ADE80;
   }
@@ -67,8 +65,7 @@ header {
   display: block;
   width: 220px;
   height: auto;
-  filter: invert(1);
-  mix-blend-mode: screen;      /* the inverted white ground disappears into the black */
+  filter: invert(1);           /* white on the black header */
 }
 header.home { padding: 56px 0; }
 .wordmark.big { width: 380px; }
@@ -257,7 +254,6 @@ footer img {
   height: auto;
   opacity: 0.6;
   filter: var(--logo-filter);
-  mix-blend-mode: var(--logo-blend);
 }
 
 @media (max-width: 600px) {

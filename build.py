@@ -13,7 +13,8 @@ each PDF and logo once.
     index.html           a redirect to HOME
     courses/             all courses              (templates/courses.html)
     course/<slug>/       one course + its slides/ (templates/course.html)
-    logo*.png, style.css                          (assets/)
+    logo*.svg, logo*.png, style.css               (assets/)
+    favicon.svg          assets/logo.svg on a white ground
 
 The output folder is build output only: it is deleted and rebuilt every time, so never keep
 files there.
@@ -23,6 +24,7 @@ import functools
 import html
 import http.server
 import json
+import re
 import shutil
 import sys
 import tempfile
@@ -109,6 +111,10 @@ def build(out):
     shutil.rmtree(out, ignore_errors=True)
     shutil.copytree(HERE / 'assets', out, ignore=shutil.ignore_patterns('.DS_Store'))
     (out / '.nojekyll').touch()   # marks out as made by build.py (checked above)
+    # The tab icon keeps a white ground: the bare black mark would vanish in a dark tab bar.
+    ground = '<rect width="100%" height="100%" fill="#fff"/>'
+    mark = (HERE / 'assets' / 'logo.svg').read_text()
+    (out / 'favicon.svg').write_text(re.sub(r'<svg[^>]*>', r'\g<0>' + ground, mark, count=1))
 
     missing = []
     groups = {}
