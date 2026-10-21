@@ -108,6 +108,20 @@
         "sub": "Module III",
         "pdf": "ias-lec06-state-estimation-2-slides.pdf",
         "topics": "Gaussian machinery · Closure theorems · Conjugacy · Kalman filter: predict, update, gain, algorithm"
+      },
+      {
+        "num": 7,
+        "title": "State Estimation (III)",
+        "sub": "Module III",
+        "pdf": "ias-lec07-state-estimation-3-slides.pdf",
+        "topics": "Kalman optimality · Joseph form · Riccati & observability · Steady-state filter · Sensor fusion"
+      },
+      {
+        "num": 8,
+        "title": "State Estimation (IV)",
+        "sub": "Module III",
+        "pdf": "ias-lec08-state-estimation-4-slides.pdf",
+        "topics": "EKF / UKF · Monte Carlo · Importance sampling · Particle filter · Belief as sufficient statistic"
       }
     ],
     "videos": {
@@ -116,7 +130,9 @@
       "3": "https://www.youtube.com/watch?v=Xuv3kujwjTM&list=PLCwTF9SaVAuc&index=3",
       "4": "https://www.youtube.com/watch?v=nf0GSlTbo_8&list=PLCwTF9SaVAuc&index=4",
       "5": "https://www.youtube.com/watch?v=5vXt_Zsgw28&list=PLCwTF9SaVAuc&index=5",
-      "6": "https://www.youtube.com/watch?v=zZq_obGHvnM&list=PLCwTF9SaVAuc&index=6"
+      "6": "https://www.youtube.com/watch?v=zZq_obGHvnM&list=PLCwTF9SaVAuc&index=6",
+      "7": "https://www.youtube.com/watch?v=STXMjIUI7Vg&list=PLCwTF9SaVAuc&index=7",
+      "8": "https://www.youtube.com/watch?v=5mzDwptxBvo&list=PLCwTF9SaVAuc&index=8"
     }
   }
 ]
