@@ -55,15 +55,16 @@ Adding a lecture: the `deploy` skill (`.claude/skills/deploy/`) — fill, build,
 ## Design (decided with the owner — keep unless asked)
 
 - The look of the lecture decks: monochrome, Rajdhani / DM Sans / Space Mono, square corners,
-  hard offset shadows, dark cover-style header. The **only colour** is the green dot of
-  "Ongoing courses". Light and dark mode both.
+  hard offset shadows, dark cover-style header. **Two colours only:** the green dot of
+  "Ongoing courses" and the red *(GIFs don't play)*. Light and dark mode both.
 - `/courses/`: large AIG wordmark + LinkedIn button; no page title; courses grouped under
   "<status> courses"; each card: eyebrow, title, tagline, **Course content →** button,
   **Register ↗** as a text link. No "latest lecture" line.
 - Eyebrow is "Master's course" for both — no university name in it.
-- Course page: **← All courses**, Register (button) + Recordings, then lectures — each with
-  **Slides** (the HTML slides, engineering only), **PDF** (size measured by the build; *GIFs
-  don't play* under it when the slides have GIFs) and **Video**.
+- Course page: **← All courses**, Register (button) + Recordings, then lectures — each with a
+  row of separate buttons of one size (not stacked, not merged): **Slides** (the HTML slides,
+  engineering only), **PDF** (size measured by the build; a small red *(GIFs don't play)* under
+  it when the slides have GIFs), **Video**. Intro has the same row without Slides.
 - Footer on every page (`FOOTER` in `build.py`): logo · Autonomous Intelligence Group ·
   Kyiv Academic University (kau.org.ua) · Institute of Mathematics NAS of Ukraine
   (imath.kiev.ua). No year.

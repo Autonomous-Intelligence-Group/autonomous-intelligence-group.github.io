@@ -22,7 +22,8 @@
   --rule: var(--gray-200);
   --ink: var(--black);          /* borders and shadows of controls */
   --logo-filter: none;
-  --live: #15803D;              /* the only colour on the site: "ongoing" */
+  --live: #15803D;              /* one of the two colours on the site: "ongoing" */
+  --warn: #B91C1C;              /* the other: "(GIFs don't play)" */
 }
 @media (prefers-color-scheme: dark) {
   :root {
@@ -34,6 +35,7 @@
     --ink: var(--gray-50);
     --logo-filter: invert(1);
     --live: #4ADE80;
+    --warn: #F87171;
   }
 }
 
@@ -220,8 +222,16 @@ ol { list-style: none; margin: 0; padding: 0; }
 }
 .sub { margin: 0 0 6px; color: var(--fg-2); }
 .topics { margin: 0; font-size: 14px; color: var(--fg-3); }
-.links { align-self: center; display: grid; gap: 12px; }
+.links {                       /* the lecture's links: separate buttons of one size, in a row */
+  align-self: center;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 12px;
+}
+.links:has(.stills) { margin-bottom: 18px; }   /* room for the note under the PDF */
 .link {
+  position: relative;
   display: flex;
   justify-content: space-between;
   gap: 12px;
@@ -237,11 +247,15 @@ ol { list-style: none; margin: 0; padding: 0; }
 }
 .link span { font-weight: 400; color: var(--fg-3); }
 .link:hover { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
-.stills p {                    /* under the PDF of slides with GIFs */
-  margin: 7px 0 0;
-  font: 400 11px/1.2 'Space Mono', monospace;
-  color: var(--fg-3);
+.stills {                      /* under the PDF of slides with GIFs, below its shadow */
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  right: 0;
+  font: 400 10px/1 'Space Mono', monospace;
+  text-transform: none;
   text-align: center;
+  color: var(--warn);
 }
 
 footer {
@@ -275,5 +289,6 @@ footer img {
   .card h3 { font-size: 26px; }
   .lecture { grid-template-columns: 44px 1fr; }
   .num { font-size: 28px; }
-  .links { grid-column: 2; display: flex; flex-wrap: wrap; align-items: flex-start; margin-top: 10px; }
+  .links { grid-column: 1 / -1; gap: 8px; margin-top: 14px; }   /* the whole row: three fit */
+  .link { gap: 8px; padding-inline: 10px; }
 }

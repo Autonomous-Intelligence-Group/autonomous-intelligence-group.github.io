@@ -66,12 +66,9 @@ ROW = '''      <li class="lecture">
         </div>
       </li>'''
 SLIDES = '\n          <a class="link" href="slides/{html}" target="_blank" rel="noopener">Slides <span>↗</span></a>'
-PDF = '<a class="link" href="slides/{pdf}" target="_blank" rel="noopener">PDF <span>{size}</span></a>'
+PDF = '<a class="link" href="slides/{pdf}" target="_blank" rel="noopener">PDF <span>{size}</span>{stills}</a>'
 # A PDF shows each GIF as one still frame: said under the PDF of slides that have GIFs.
-STILLS = '''<div class="stills">
-            {pdf}
-            <p>GIFs don't play</p>
-          </div>'''
+STILLS = '<small class="stills">(GIFs don\'t play)</small>'
 VIDEO ='\n          <a class="link" href="{url}" target="_blank" rel="noopener">Video <span>↗</span></a>'
 BUTTON = '      <a class="btn {cls}" href="{url}" target="_blank" rel="noopener">{label} ↗</a>'
 CARD = '''      <article class="card">
@@ -102,14 +99,14 @@ def pictures(deck):
 
 def row(lec, pdf, videos, deck=None, gifs=False):
     url = videos.get(str(lec['num']))
-    link = PDF.format(pdf=pdf.name, size=f'{pdf.stat().st_size / 1e6:.1f} MB')
+    size = f'{pdf.stat().st_size / 1e6:.1f} MB'
     return ROW.format(
         num=f'{lec["num"]:02d}',
         name=esc(lec['title']),
         sub=f'\n          <p class="sub">{esc(lec["sub"])}</p>' if lec.get('sub') else '',
         topics=f'\n          <p class="topics">{esc(lec["topics"])}</p>' if lec.get('topics') else '',
         slides=SLIDES.format(html=deck.name) if deck else '',
-        pdf=STILLS.format(pdf=link) if gifs else link,
+        pdf=PDF.format(pdf=pdf.name, size=size, stills=STILLS if gifs else ''),
         video=VIDEO.format(url=esc(url)) if url else '',
     )
 

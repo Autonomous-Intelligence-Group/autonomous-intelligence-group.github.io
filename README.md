@@ -28,8 +28,8 @@ The same for both courses:
    python3 import_slides.py <path/to/lecture-04-….html> engineering
    ```
    It copies the slides beside their PDF without the speaker notes, and the pictures they show
-   into `slides/engineering/img/`. The page then gets **Slides ↗**, and *GIFs don't play* under
-   the PDF when the slides have GIFs. Run it again whenever the slides change.
+   into `slides/engineering/img/`. The page then gets **Slides ↗**, and a red *(GIFs don't play)*
+   under the PDF when the slides have GIFs. Run it again whenever the slides change.
 2. **Info.** Add it to that course's `"lectures"` in [`courses.json`](courses.json), copied from
    the PDF's cover. `pdf` is the file name in `slides/<course>/`; `sub` and `topics` are optional.
    ```json
