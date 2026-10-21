@@ -33,13 +33,29 @@
         "sub": "From a Twist to turning wheels and spinning rotors",
         "pdf": "lecture-03-inside-the-drive.pdf",
         "topics": "Differential drive · Inside the plugin · Odometry · Four wheels · One wheel · Hardware · Rotors"
+      },
+      {
+        "num": 4,
+        "title": "Building the Robot",
+        "sub": "A body ROS 2 can see, frames it can trust, and how far odometry drifts",
+        "pdf": "lecture-04-building-the-robot.pdf",
+        "topics": "Frames and TF · A robot in URDF · One clock · Measuring drift"
+      },
+      {
+        "num": 5,
+        "title": "Sensors and Noise",
+        "sub": "What a sensor measures, how noisy it is, and where the lidar is blind",
+        "pdf": "lecture-05-sensors-and-noise.pdf",
+        "topics": "What Sensors Measure · The Lidar · Noise · Where the Lidar Is Blind"
       }
     ],
     "videos": {
       "0": "https://www.youtube.com/watch?v=eaUMphrXN6M&list=PLBeDJyZEjxEo&index=1",
       "1": "https://www.youtube.com/watch?v=rybYbZVX8qI&list=PLBeDJyZEjxEo&index=2",
       "2": "https://www.youtube.com/watch?v=D-PPyDowY_8&list=PLBeDJyZEjxEo&index=3",
-      "3": "https://www.youtube.com/watch?v=1toelWxVnjs&list=PLBeDJyZEjxEo&index=4"
+      "3": "https://www.youtube.com/watch?v=1toelWxVnjs&list=PLBeDJyZEjxEo&index=4",
+      "4": "https://www.youtube.com/watch?v=J9UCOfLO-NA&list=PLBeDJyZEjxEo&index=5",
+      "5": "https://www.youtube.com/watch?v=foSLMExJZCY&list=PLBeDJyZEjxEo&index=6"
     }
   },
   {
