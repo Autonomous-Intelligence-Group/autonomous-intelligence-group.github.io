@@ -30,6 +30,10 @@ and ask.
 - Which course: `ias-lecNN-*.pdf`, or a cover whose second line starts
   `INTRODUCTION TO AUTONOMOUS SYSTEMS` → `intro`; `lecture-NN-*.pdf` (cover without a course
   name) → `engineering`. Unsure → ask.
+- **HTML slides, engineering only:** the `.html` of the same name beside the given PDF (Marp
+  builds both). Bring it in with `python3 import_slides.py <path/to/lecture-NN-….html> engineering`
+  — it cuts the speaker notes; never copy the HTML by hand. None there → the lecture shows no
+  Slides link; say so.
 
 ## 2. The entry in `courses.json`
 
@@ -102,11 +106,11 @@ The first `<title>` is the playlist; then one id + title per video. Find the tit
 
 ```bash
 python3 build.py --out /tmp/aig-site
-grep -o '<pdf name>\|<video id>[^"]*' /tmp/aig-site/course/<slug>/index.html | sort -u
+grep -o "<pdf name without .pdf>[^\"]*\|<video id>[^\"]*\|GIFs don't play" /tmp/aig-site/course/<slug>/index.html | sort -u
 ```
 
 The lecture count for the course must have gone up, and both the PDF and the video link must be
-on the page. A build failure (`listed in courses.json but no PDF`) means a wrong `"pdf"` name —
+on the page — for engineering also the `.html` slides, with *GIFs don't play* if they have GIFs. A build failure (`listed in courses.json but no PDF`) means a wrong `"pdf"` name —
 fix it and build again: pushed as it is, it would fail the deploy.
 
 Only content changed, so no visual check is needed. If templates, `assets/` or `build.py`
@@ -118,13 +122,13 @@ The push is the deploy. Push only when the user asked to deploy or publish (`/de
 if they only asked to prepare a lecture, stop here and give them these commands instead.
 
 ```bash
-git add slides/<slug>/<new pdf> courses.json
+git add slides/<slug>/<new pdf> slides/<slug>/<new html> slides/<slug>/img courses.json
 git commit -m "<Course short name>: Lecture N — <title>"
 git pull --rebase && git push
 gh run list --workflow deploy.yml --limit 1    # this push's Deploy run: wait for ✓, about a minute
 ```
 
-- Commit only this lecture: the new PDF and `courses.json`. Other uncommitted changes — name them and leave them out.
+- Commit only this lecture: the new PDF, its HTML slides and their pictures, and `courses.json`. Other uncommitted changes — name them and leave them out.
 - Rebase conflict (someone pushed meanwhile): keep both sides in `courses.json`, check that
   `python3 build.py` passes, then `git add courses.json` and `git rebase --continue`.
 - Push refused for permission: the user needs collaborator access — the owner adds them under
@@ -134,5 +138,5 @@ gh run list --workflow deploy.yml --limit 1    # this push's Deploy run: wait fo
 - Never force-push.
 
 Reply with: the entry (title, sub, topics), the video (id, position) or that there is none yet,
-the commit, and the page — live about a minute after the push:
+the HTML slides (how many GIFs) or that there are none, the commit, and the page — live about a minute after the push:
 `https://autonomous-intelligence-group.github.io/course/<slug>/`.

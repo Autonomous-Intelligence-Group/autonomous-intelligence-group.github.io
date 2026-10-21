@@ -22,6 +22,14 @@ The same for both courses:
 
 1. **Slides.** Put the PDF in `slides/<course>/` — `slides/engineering/lecture-04-….pdf`,
    `slides/intro/ias-lec07-….pdf`. The file name becomes part of a public URL.
+   Engineering also gets its HTML slides — the Marp export made with the PDF, which plays the
+   GIFs a PDF cannot:
+   ```bash
+   python3 import_slides.py <path/to/lecture-04-….html> engineering
+   ```
+   It copies the slides beside their PDF without the speaker notes, and the pictures they show
+   into `slides/engineering/img/`. The page then gets **Slides ↗**, and *GIFs don't play* under
+   the PDF when the slides have GIFs. Run it again whenever the slides change.
 2. **Info.** Add it to that course's `"lectures"` in [`courses.json`](courses.json), copied from
    the PDF's cover. `pdf` is the file name in `slides/<course>/`; `sub` and `topics` are optional.
    ```json
@@ -78,7 +86,8 @@ Both build into a temporary folder and delete it afterwards, so the project gets
 | Path | What it is |
 |---|---|
 | `courses.json` | Everything the site shows |
-| `slides/<course>/` | The lecture PDFs |
+| `slides/<course>/` | The lecture PDFs; for engineering also the HTML slides (`<pdf name>.html`) and their `img/` |
+| `import_slides.py` | Brings a lecture's HTML slides in, without the speaker notes |
 | `templates/` | `courses.html` (all courses) and `course.html` (one course) |
 | `assets/` | `style.css` and the logos — `logo` (the mark) and `logo-text` (the wordmark) on a transparent ground, as SVG and PNG (4×) — copied to the site root; the favicon is made from `logo.svg` |
 | `build.py` | Fills the templates → the site. Python 3, standard library only |

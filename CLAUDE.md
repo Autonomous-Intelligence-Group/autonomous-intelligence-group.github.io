@@ -40,6 +40,9 @@ Adding a lecture: the `deploy` skill (`.claude/skills/deploy/`) — fill, build,
 - **Both courses work the same way:** a PDF in `slides/<slug>/`, its entry in `courses.json`
   written from the cover, its video added when it is up. No course is synced or generated
   from elsewhere.
+- **HTML slides** (engineering only, the owner's call) come in only through `import_slides.py`:
+  the Marp export carries the lecturer's speaker notes, and this repo is public — it cuts them.
+  Never copy a deck in by hand.
 - **Video links** are `watch?v=<id>&list=<playlist>&index=<position>`. `v=` is required: without
   it YouTube ignores `index` and starts at the first video (checked 2026-10-08). `engineering`
   starts at Lecture 0 (`index` = N + 1), `intro` at Lecture 1 (`index` = N). Before adding,
@@ -59,7 +62,8 @@ Adding a lecture: the `deploy` skill (`.claude/skills/deploy/`) — fill, build,
   **Register ↗** as a text link. No "latest lecture" line.
 - Eyebrow is "Master's course" for both — no university name in it.
 - Course page: **← All courses**, Register (button) + Recordings, then lectures — each with
-  **PDF** (size measured by the build) and **Video**.
+  **Slides** (the HTML slides, engineering only), **PDF** (size measured by the build; *GIFs
+  don't play* under it when the slides have GIFs) and **Video**.
 - Footer on every page (`FOOTER` in `build.py`): logo · Autonomous Intelligence Group ·
   Kyiv Academic University (kau.org.ua) · Institute of Mathematics NAS of Ukraine
   (imath.kiev.ua). No year.

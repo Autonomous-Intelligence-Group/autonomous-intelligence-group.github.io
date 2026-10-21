@@ -6,6 +6,8 @@
     python3 build.py --out _site   # build into _site/ and keep it — what GitHub Actions publishes
 
 Everything on the site comes from courses.json; each lecture's PDF is slides/<slug>/<pdf>.
+HTML slides beside it, slides/<slug>/<pdf name>.html (import_slides.py puts them there, their
+pictures in img/), get a Slides link — and a note under the PDF when they have GIFs.
 On every push to main, GitHub Actions builds into _site/ and publishes it
 (.github/workflows/deploy.yml). A local build goes to a temporary folder, so the project keeps
 each PDF and logo once.
@@ -59,11 +61,18 @@ ROW = '''      <li class="lecture">
         <div class="body">
           <h3>{name}</h3>{sub}{topics}
         </div>
-        <div class="links">
-          <a class="link" href="slides/{pdf}" target="_blank" rel="noopener">PDF <span>{size}</span></a>{video}
+        <div class="links">{slides}
+          {pdf}{video}
         </div>
       </li>'''
-VIDEO = '\n          <a class="link" href="{url}" target="_blank" rel="noopener">Video <span>↗</span></a>'
+SLIDES = '\n          <a class="link" href="slides/{html}" target="_blank" rel="noopener">Slides <span>↗</span></a>'
+PDF = '<a class="link" href="slides/{pdf}" target="_blank" rel="noopener">PDF <span>{size}</span></a>'
+# A PDF shows each GIF as one still frame: said under the PDF of slides that have GIFs.
+STILLS = '''<div class="stills">
+            {pdf}
+            <p>GIFs don't play</p>
+          </div>'''
+VIDEO ='\n          <a class="link" href="{url}" target="_blank" rel="noopener">Video <span>↗</span></a>'
 BUTTON = '      <a class="btn {cls}" href="{url}" target="_blank" rel="noopener">{label} ↗</a>'
 CARD = '''      <article class="card">
         <p class="meta">{eyebrow}</p>
@@ -83,15 +92,24 @@ GROUP = '''  <section>
   </section>'''
 
 
-def row(lec, pdf, videos):
+# HTML slides (Marp's export, brought in by import_slides.py) load their pictures from img/.
+PICTURE = re.compile(r'(?<![\w./-])img/[\w./-]+?\.(?:png|jpe?g|gif|svg|webp)', re.I)
+
+
+def pictures(deck):
+    return sorted(set(PICTURE.findall(deck.read_text())))
+
+
+def row(lec, pdf, videos, deck=None, gifs=False):
     url = videos.get(str(lec['num']))
+    link = PDF.format(pdf=pdf.name, size=f'{pdf.stat().st_size / 1e6:.1f} MB')
     return ROW.format(
         num=f'{lec["num"]:02d}',
         name=esc(lec['title']),
         sub=f'\n          <p class="sub">{esc(lec["sub"])}</p>' if lec.get('sub') else '',
         topics=f'\n          <p class="topics">{esc(lec["topics"])}</p>' if lec.get('topics') else '',
-        pdf=pdf.name,
-        size=f'{pdf.stat().st_size / 1e6:.1f} MB',
+        slides=SLIDES.format(html=deck.name) if deck else '',
+        pdf=STILLS.format(pdf=link) if gifs else link,
         video=VIDEO.format(url=esc(url)) if url else '',
     )
 
@@ -117,18 +135,34 @@ def build(out):
     (out / 'favicon.svg').write_text(re.sub(r'<svg[^>]*>', r'\g<0>' + ground, mark, count=1))
 
     missing = []
+    lost = []
     groups = {}
     for c in json.loads((HERE / 'courses.json').read_text()):
         page = out / 'course' / c['slug']
         (page / 'slides').mkdir(parents=True)
         rows = []
+        decks = 0
         for lec in sorted(c['lectures'], key=lambda lec: lec['num']):
             pdf = HERE / 'slides' / c['slug'] / lec['pdf']
             if not pdf.exists():
                 missing.append(str(pdf.relative_to(HERE)))
                 continue
             shutil.copy2(pdf, page / 'slides' / pdf.name)
-            rows.append(row(lec, pdf, c.get('videos', {})))
+            deck = pdf.with_suffix('.html')   # the lecture's HTML slides, if it has them
+            if not deck.exists():
+                rows.append(row(lec, pdf, c.get('videos', {})))
+                continue
+            shown = pictures(deck)
+            for name in shown:
+                if not (deck.parent / name).exists():
+                    lost.append(str((deck.parent / name).relative_to(HERE)))
+                    continue
+                (page / 'slides' / name).parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(deck.parent / name, page / 'slides' / name)
+            shutil.copy2(deck, page / 'slides' / deck.name)
+            decks += 1
+            gifs = any(name.lower().endswith('.gif') for name in shown)
+            rows.append(row(lec, pdf, c.get('videos', {}), deck, gifs))
 
         # Register leads when a course has a form; otherwise the recordings do.
         actions = [BUTTON.format(cls='primary', url=esc(c['register']), label='Register')] if c.get('register') else []
@@ -141,7 +175,7 @@ def build(out):
             slug=c['slug'], eyebrow=esc(c['eyebrow']), title=esc(c['title']), tagline=esc(c['tagline']),
             register=REGISTER.format(url=esc(c['register'])) if c.get('register') else '',
         ))
-        print(f'course/{c["slug"]}/: {len(rows)} lectures')
+        print(f'course/{c["slug"]}/: {len(rows)} lectures' + (f', {decks} with HTML slides' if decks else ''))
 
     fill('courses.html', out / 'courses' / 'index.html', ROOT='../', FOOTER=FOOTER, COURSES='\n'.join(
         GROUP.format(status=esc(status), live=' live' if status == 'Ongoing' else '', cards='\n'.join(cards))
@@ -151,6 +185,8 @@ def build(out):
     if missing:
         # Fail rather than publish a course with a lecture silently gone.
         sys.exit('listed in courses.json but no PDF:\n  ' + '\n  '.join(missing))
+    if lost:
+        sys.exit('HTML slides show pictures that are not there:\n  ' + '\n  '.join(lost))
     print(f'{sum(map(len, groups.values()))} courses, / -> {HOME}')
 
 

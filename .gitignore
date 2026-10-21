@@ -2,3 +2,4 @@
 # build output (build.py --out): the site is built by GitHub Actions, never committed
 _site/
 docs/
+__pycache__/
