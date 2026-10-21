@@ -14,7 +14,9 @@ each PDF and logo once.
 
     index.html           a redirect to HOME
     courses/             all courses              (templates/courses.html)
-    course/<slug>/       one course + its slides/ (templates/course.html)
+    courses/<slug>/      one course + its slides/ (templates/course.html)
+    course/, course/<slug>/  redirects to courses/, courses/<slug>/ — the old addresses
+    404.html             not found; sends any other old course/… link on (templates/404.html)
     logo*.svg, logo*.png, style.css               (assets/)
     favicon.svg          assets/logo.svg on a white ground
 
@@ -35,7 +37,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 # Temporary: the bare site URL — the one the Lab 1 READMEs already link — opens the
 # engineering course. Set to 'courses/' once the all-courses page should be the front door.
-HOME = 'course/engineering/'
+HOME = 'courses/engineering/'
 esc = html.escape
 
 # The same on every page.
@@ -73,10 +75,10 @@ VIDEO ='\n          <a class="link" href="{url}" target="_blank" rel="noopener">
 BUTTON = '      <a class="btn {cls}" href="{url}" target="_blank" rel="noopener">{label} ↗</a>'
 CARD = '''      <article class="card">
         <p class="meta">{eyebrow}</p>
-        <h3><a href="../course/{slug}/">{title}</a></h3>
+        <h3><a href="{slug}/">{title}</a></h3>
         <p class="tagline">{tagline}</p>
         <div class="actions">
-          <a class="btn small solid" href="../course/{slug}/">Course content →</a>{register}
+          <a class="btn small solid" href="{slug}/">Course content →</a>{register}
         </div>
       </article>'''
 REGISTER = '\n          <a class="text-link" href="{url}" target="_blank" rel="noopener">Register ↗</a>'
@@ -135,8 +137,12 @@ def build(out):
     lost = []
     groups = {}
     for c in json.loads((HERE / 'courses.json').read_text()):
-        page = out / 'course' / c['slug']
+        page = out / 'courses' / c['slug']
         (page / 'slides').mkdir(parents=True)
+        # The old address, course/<slug>/ (until 2026-10-21), sends readers on.
+        old = out / 'course' / c['slug'] / 'index.html'
+        old.parent.mkdir(parents=True)
+        old.write_text(REDIRECT.format(url=f'../../courses/{c["slug"]}/'))
         rows = []
         decks = 0
         for lec in sorted(c['lectures'], key=lambda lec: lec['num']):
@@ -172,12 +178,16 @@ def build(out):
             slug=c['slug'], eyebrow=esc(c['eyebrow']), title=esc(c['title']), tagline=esc(c['tagline']),
             register=REGISTER.format(url=esc(c['register'])) if c.get('register') else '',
         ))
-        print(f'course/{c["slug"]}/: {len(rows)} lectures' + (f', {decks} with HTML slides' if decks else ''))
+        print(f'courses/{c["slug"]}/: {len(rows)} lectures' + (f', {decks} with HTML slides' if decks else ''))
 
     fill('courses.html', out / 'courses' / 'index.html', ROOT='../', FOOTER=FOOTER, COURSES='\n'.join(
         GROUP.format(status=esc(status), live=' live' if status == 'Ongoing' else '', cards='\n'.join(cards))
         for status, cards in groups.items()))
     (out / 'index.html').write_text(REDIRECT.format(url=HOME))
+    (out / 'course').mkdir(exist_ok=True)   # the old address of the course pages, as a whole
+    (out / 'course' / 'index.html').write_text(REDIRECT.format(url='../courses/'))
+    # Served for any missing path, at any depth: its links start at the site root.
+    fill('404.html', out / '404.html', ROOT='/', FOOTER=FOOTER)
 
     if missing:
         # Fail rather than publish a course with a lecture silently gone.
@@ -187,8 +197,27 @@ def build(out):
     print(f'{sum(map(len, groups.values()))} courses, / -> {HOME}')
 
 
+class Pages(http.server.SimpleHTTPRequestHandler):
+    """Serves the site as GitHub Pages does: a missing path gets 404.html."""
+
+    def send_error(self, code, message=None, explain=None):
+        page = Path(self.directory) / '404.html'
+        if code != 404 or not page.exists():
+            return super().send_error(code, message, explain)
+        body = page.read_bytes()
+        self.send_response(404)
+        self.send_header('Content-Type', 'text/html; charset=utf-8')
+        self.send_header('Content-Length', str(len(body)))
+        self.end_headers()
+        if self.command != 'HEAD':
+            self.wfile.write(body)
+
+    def list_directory(self, path):   # Pages never lists a folder's files
+        self.send_error(404)
+
+
 def serve(site, port=8000):
-    handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=site)
+    handler = functools.partial(Pages, directory=site)
     with http.server.ThreadingHTTPServer(('localhost', port), handler) as server:
         print(f'http://localhost:{port}/ — Ctrl+C to stop')
         try:

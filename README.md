@@ -5,10 +5,11 @@ registration: **https://autonomous-intelligence-group.github.io/**
 
 | URL | Page |
 |---|---|
-| `/` | **Temporary** redirect to `course/engineering/` (`HOME` in `build.py`; set it to `courses/` to make the all-courses page the front door) |
+| `/` | **Temporary** redirect to `courses/engineering/` (`HOME` in `build.py`; set it to `courses/` to make the all-courses page the front door) |
 | `/courses/` | All courses |
-| `/course/engineering/` | Autonomous Robotic Systems Engineering |
-| `/course/intro/` | Introduction to Autonomous Systems |
+| `/courses/engineering/` | Autonomous Robotic Systems Engineering |
+| `/courses/intro/` | Introduction to Autonomous Systems |
+| `/course/…` | The old addresses (until 2026-10-21): the course pages redirect to `/courses/…`, and the not-found page sends any other old link — a PDF, slides — to the same path under `/courses/` |
 | `/logo.svg`, `/logo-text.svg`, `/logo.png`, `/logo-text.png` | The AIG mark and wordmark on a transparent ground (PNG at 4×) — other repos may embed them, keep the names |
 
 **Deploying is pushing.** On every push to `main`, GitHub Actions runs [`build.py`](build.py)

@@ -106,7 +106,7 @@ The first `<title>` is the playlist; then one id + title per video. Find the tit
 
 ```bash
 python3 build.py --out /tmp/aig-site
-grep -o "<pdf name without .pdf>[^\"]*\|<video id>[^\"]*\|GIFs don't play" /tmp/aig-site/course/<slug>/index.html | sort -u
+grep -o "<pdf name without .pdf>[^\"]*\|<video id>[^\"]*\|GIFs don't play" /tmp/aig-site/courses/<slug>/index.html | sort -u
 ```
 
 The lecture count for the course must have gone up, and both the PDF and the video link must be
@@ -139,4 +139,4 @@ gh run list --workflow deploy.yml --limit 1    # this push's Deploy run: wait fo
 
 Reply with: the entry (title, sub, topics), the video (id, position) or that there is none yet,
 the HTML slides (how many GIFs) or that there are none, the commit, and the page — live about a minute after the push:
-`https://autonomous-intelligence-group.github.io/course/<slug>/`.
+`https://autonomous-intelligence-group.github.io/courses/<slug>/`.

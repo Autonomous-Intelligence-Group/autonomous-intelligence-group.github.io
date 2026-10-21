@@ -15,10 +15,11 @@ source folder. Python 3, standard library only.
 
 | URL | Page |
 |---|---|
-| `/` | Temporary redirect (`HOME` in `build.py`) to `course/engineering/` — Lab 1 READMEs link the bare URL. Later: `courses/` |
+| `/` | Temporary redirect (`HOME` in `build.py`) to `courses/engineering/` — Lab 1 READMEs link the bare URL. Later: `courses/` |
 | `/courses/` | All courses |
-| `/course/engineering/` | Autonomous Robotic Systems Engineering |
-| `/course/intro/` | Introduction to Autonomous Systems |
+| `/courses/engineering/` | Autonomous Robotic Systems Engineering |
+| `/courses/intro/` | Introduction to Autonomous Systems |
+| `/course/…` | Old addresses (until 2026-10-21): redirect pages for the courses, `404.html` for the rest (PDFs, slides) — keep both |
 | `/logo.svg`, `/logo-text.svg`, `/logo.png`, `/logo-text.png` | The logos, transparent (PNG at 4×), each stored once in `assets/` — other repos may embed them: never rename or move |
 
 URLs are public and linked from elsewhere: do not rename slugs or paths without asking. The old
