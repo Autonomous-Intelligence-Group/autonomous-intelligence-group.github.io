@@ -52,6 +52,9 @@ def main():
         shutil.copy2(deck.parent / name, dest / name)
     html = without_notes(deck.read_text())
     (dest / deck.name).write_text(html)
+    if '<title>' not in html.split('</head>')[0]:
+        print(f'note: {deck.name} has no <title>, so a browser tab shows its file name — give the deck '
+              'a `title:` in its front matter, export it again and bring it in again')
 
     gifs = sum(name.lower().endswith('.gif') for name in shown)
     print(f'slides/{course}/{deck.name}: {len(shown)} pictures, {gifs} of them GIFs; speaker notes left out')
