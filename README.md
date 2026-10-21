@@ -11,10 +11,10 @@ registration: **https://autonomous-intelligence-group.github.io/**
 | `/course/intro/` | Introduction to Autonomous Systems |
 | `/logo.png`, `/logo-text.png` | The AIG mark and wordmark — other repos hot-link them, keep the names |
 
-**Deploying is pushing.** On every push to `main`, GitHub Actions runs [`build.py`](build.py),
-which writes the site into `docs/`, and publishes it — about a minute. `docs/` is not committed,
-so each PDF and logo is stored once, in `slides/` and `assets/`; build locally only to check a
-change. Python 3 only, nothing to install.
+**Deploying is pushing.** On every push to `main`, GitHub Actions runs [`build.py`](build.py)
+and publishes the site it builds — about a minute. Each PDF and logo is stored once, in
+`slides/` and `assets/`: the built site is never committed, and a local build goes to a
+temporary folder. Python 3 only, nothing to install.
 
 ## Adding a lecture
 
@@ -58,12 +58,11 @@ stays as it was.
 ## Checking before pushing
 
 ```bash
-python3 build.py                          # prints the lectures per course
-python3 -m http.server 8000 -d docs       # http://localhost:8000/ — Ctrl+C to stop
+python3 build.py            # builds and checks — prints the lectures per course
+python3 build.py --serve    # the same, and shows it at http://localhost:8000/ — Ctrl+C to stop
 ```
 
-`docs/` is output only — deleted and rebuilt on every build and never committed, so never put
-files there.
+Both build into a temporary folder and delete it afterwards, so the project gets no copies.
 
 ## Other changes
 
@@ -83,9 +82,8 @@ files there.
 | `templates/` | `courses.html` (all courses) and `course.html` (one course) |
 | `assets/` | `style.css` and the logos, copied to the site root |
 | `assets/logos/` | `logo` and `logo-text` on a transparent background, as SVG and PNG (4× the original size) |
-| `build.py` | Fills the templates → `docs/`. Python 3, standard library only |
-| `docs/` | The built site, for the local preview — not committed; never edit by hand |
-| `.github/workflows/deploy.yml` | On every push to `main`: runs `build.py` and publishes `docs/` |
+| `build.py` | Fills the templates → the site. Python 3, standard library only |
+| `.github/workflows/deploy.yml` | On every push to `main`: `build.py --out _site`, then publishes `_site/` |
 | `CLAUDE.md` | Conventions for an AI agent working in this repo |
 | `.claude/skills/deploy/` | Claude Code `/deploy <pdf>`: all of "Adding a lecture" — fills `courses.json`, finds the video, builds, commits and pushes |
 
@@ -95,9 +93,9 @@ files there.
   named `<organization>.github.io` is the organization's own site, served at the root of the
   domain. Renaming it moves the site.
 - **Pages.** Settings → Pages → Source: GitHub Actions. Each push to `main` runs the **Deploy**
-  workflow ([`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)): it runs `build.py`
-  and publishes the `docs/` it makes. Its runs are in the **Actions** tab; a failed run
-  publishes nothing, and the site stays as it was.
+  workflow ([`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)): it runs
+  `build.py --out _site` and publishes `_site/`. Its runs are in the **Actions** tab; a failed
+  run publishes nothing, and the site stays as it was.
 - **Actions.** The organization enables GitHub Actions for this repo only: organization
   Settings → Actions → General → Policies → selected repositories. With Actions off, a push
   silently deploys nothing — the site stays at its last deploy.

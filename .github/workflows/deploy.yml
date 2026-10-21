@@ -1,5 +1,5 @@
-# Every push to main is a deploy: build.py makes docs/ from the sources, and docs/ is published.
-# docs/ is not committed — this build is what the site serves.
+# Every push to main is a deploy: build.py builds the site into _site/, and _site/ is published.
+# The built site is never committed — this build is what the site serves.
 name: Deploy
 
 on:
@@ -24,10 +24,10 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v7
-      - run: python3 build.py   # fails on a listed PDF that is missing: then nothing is published
+      - run: python3 build.py --out _site   # fails on a listed PDF that is missing: nothing is published
       - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v5
         with:
-          path: docs
+          path: _site
       - id: deployment
         uses: actions/deploy-pages@v5

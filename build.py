@@ -1,28 +1,34 @@
 #!/usr/bin/env python3
-"""Build the site into docs/: an all-courses page and one page per course.
+"""Build the site: an all-courses page and one page per course.
 
-    python3 build.py                          # -> docs/
-    python3 -m http.server 8000 -d docs       # preview at http://localhost:8000/
+    python3 build.py               # build into a temporary folder to check it, then delete it
+    python3 build.py --serve       # the same, and preview it at http://localhost:8000/
+    python3 build.py --out _site   # build into _site/ and keep it — what GitHub Actions publishes
 
 Everything on the site comes from courses.json; each lecture's PDF is slides/<slug>/<pdf>.
-On every push to main, GitHub Actions runs this build and publishes the docs/ it makes
-(.github/workflows/deploy.yml); docs/ is not committed. Build locally to check and preview.
+On every push to main, GitHub Actions builds into _site/ and publishes it
+(.github/workflows/deploy.yml). A local build goes to a temporary folder, so the project keeps
+each PDF and logo once.
 
-    docs/index.html           a redirect to HOME
-    docs/courses/             all courses              (templates/courses.html)
-    docs/course/<slug>/       one course + its slides/ (templates/course.html)
-    docs/logo*.png, style.css                          (assets/)
+    index.html           a redirect to HOME
+    courses/             all courses              (templates/courses.html)
+    course/<slug>/       one course + its slides/ (templates/course.html)
+    logo*.png, style.css                          (assets/)
 
-docs/ is build output only: it is deleted and rebuilt every time, so never keep files there.
+The output folder is build output only: it is deleted and rebuilt every time, so never keep
+files there.
 """
+import argparse
+import functools
 import html
+import http.server
 import json
 import shutil
 import sys
+import tempfile
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-OUT = HERE / 'docs'
 # Temporary: the bare site URL — the one the Lab 1 READMEs already link — opens the
 # engineering course. Set to 'courses/' once the all-courses page should be the front door.
 HOME = 'course/engineering/'
@@ -96,18 +102,18 @@ def fill(template, dest, **values):
     dest.write_text(text)
 
 
-def main():
-    # Every build leaves .nojekyll in OUT; without it, OUT holds files a build did not make.
-    if OUT.exists() and not (OUT / '.nojekyll').exists():
-        sys.exit(f'{OUT.name}/ was not made by build.py — move its files out, then build again')
-    shutil.rmtree(OUT, ignore_errors=True)
-    shutil.copytree(HERE / 'assets', OUT)
-    (OUT / '.nojekyll').touch()   # marks OUT as made by build.py (checked above)
+def build(out):
+    # Every build leaves .nojekyll in out; without it, out holds files a build did not make.
+    if out.exists() and not (out / '.nojekyll').exists():
+        sys.exit(f'{out} was not made by build.py — move its files out, then build again')
+    shutil.rmtree(out, ignore_errors=True)
+    shutil.copytree(HERE / 'assets', out, ignore=shutil.ignore_patterns('.DS_Store'))
+    (out / '.nojekyll').touch()   # marks out as made by build.py (checked above)
 
     missing = []
     groups = {}
     for c in json.loads((HERE / 'courses.json').read_text()):
-        page = OUT / 'course' / c['slug']
+        page = out / 'course' / c['slug']
         (page / 'slides').mkdir(parents=True)
         rows = []
         for lec in sorted(c['lectures'], key=lambda lec: lec['num']):
@@ -131,15 +137,40 @@ def main():
         ))
         print(f'course/{c["slug"]}/: {len(rows)} lectures')
 
-    fill('courses.html', OUT / 'courses' / 'index.html', ROOT='../', FOOTER=FOOTER, COURSES='\n'.join(
+    fill('courses.html', out / 'courses' / 'index.html', ROOT='../', FOOTER=FOOTER, COURSES='\n'.join(
         GROUP.format(status=esc(status), live=' live' if status == 'Ongoing' else '', cards='\n'.join(cards))
         for status, cards in groups.items()))
-    (OUT / 'index.html').write_text(REDIRECT.format(url=HOME))
+    (out / 'index.html').write_text(REDIRECT.format(url=HOME))
 
     if missing:
         # Fail rather than publish a course with a lecture silently gone.
         sys.exit('listed in courses.json but no PDF:\n  ' + '\n  '.join(missing))
-    print(f'{OUT.name}/: {sum(map(len, groups.values()))} courses, / -> {HOME}')
+    print(f'{sum(map(len, groups.values()))} courses, / -> {HOME}')
+
+
+def serve(site, port=8000):
+    handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=site)
+    with http.server.ThreadingHTTPServer(('localhost', port), handler) as server:
+        print(f'http://localhost:{port}/ — Ctrl+C to stop')
+        try:
+            server.serve_forever()
+        except KeyboardInterrupt:
+            pass
+
+
+def main():
+    parser = argparse.ArgumentParser(description='Build the site (see the top of build.py).')
+    where = parser.add_mutually_exclusive_group()
+    where.add_argument('--out', type=Path, help='build into this folder and keep it')
+    where.add_argument('--serve', action='store_true', help='preview at http://localhost:8000/')
+    args = parser.parse_args()
+    if args.out:
+        return build(args.out.resolve())
+    # A temporary folder, deleted afterwards: no copies of the PDFs and logos in the project.
+    with tempfile.TemporaryDirectory() as tmp:
+        build(Path(tmp) / 'site')
+        if args.serve:
+            serve(Path(tmp) / 'site')
 
 
 if __name__ == '__main__':

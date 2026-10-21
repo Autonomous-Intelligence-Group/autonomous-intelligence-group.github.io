@@ -7,10 +7,11 @@ Readers are students and applicants. How to add a lecture, preview and deploy is
 ## Layout and flow
 
 `courses.json` (everything shown) + `slides/<slug>/*.pdf` + `templates/` + `assets/` →
-`build.py` → `docs/` → GitHub Pages. On every push to `main`, GitHub Actions
-(`.github/workflows/deploy.yml`) runs the build and publishes its `docs/`; the org enables
-Actions for this repo only — keep it so (README → Hosting). `docs/` is not committed, so every
-file is stored once, in its source folder. Python 3, standard library only.
+`build.py` → the site → GitHub Pages. On every push to `main`, GitHub Actions
+(`.github/workflows/deploy.yml`) runs `build.py --out _site` and publishes `_site/`; the org
+enables Actions for this repo only — keep it so (README → Hosting). The built site is never
+committed and a local build goes to a temporary folder, so every file is stored once, in its
+source folder. Python 3, standard library only.
 
 | URL | Page |
 |---|---|
@@ -32,9 +33,9 @@ Adding a lecture: the `deploy` skill (`.claude/skills/deploy/`) — fill, build,
 
 - **English**, short. Never link the private deck repo or its wiki from the site — readers do not have them.
 - **PDFs in `slides/` are originals.** Never delete, move or overwrite them without asking.
-  Only `docs/` (build output) is disposable; a script must never clear any other folder (a
-  build once wiped the only copies of five PDFs). Never keep files in `docs/` — `build.py`
-  refuses to clear a `docs/` without its `.nojekyll`.
+  Only build output is disposable — the temporary folder, or the one given to `--out`; a
+  script must never clear any other folder (a build once wiped the only copies of five PDFs).
+  `build.py` refuses to clear a folder without its `.nojekyll`.
 - **Both courses work the same way:** a PDF in `slides/<slug>/`, its entry in `courses.json`
   written from the cover, its video added when it is up. No course is synced or generated
   from elsewhere.
@@ -63,7 +64,7 @@ Adding a lecture: the `deploy` skill (`.claude/skills/deploy/`) — fill, build,
   (imath.kiev.ua). No year.
 - Before pushing a visual change, render it — light, dark and 390 px wide — and look:
   ```bash
-  python3 -m http.server 8000 -d docs    # or headless Chrome --screenshot on docs/**/index.html
+  python3 build.py --serve    # http://localhost:8000/ — or headless Chrome --screenshot on it
   ```
 
 Commit messages in English.

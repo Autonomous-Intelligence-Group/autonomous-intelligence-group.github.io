@@ -1,3 +1,4 @@
 .DS_Store
-# build output: GitHub Actions builds the site on every push (.github/workflows/deploy.yml)
+# build output (build.py --out): the site is built by GitHub Actions, never committed
+_site/
 docs/

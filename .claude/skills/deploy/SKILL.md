@@ -8,9 +8,9 @@ argument-hint: "[path/to/lecture.pdf]"
 
 The user — the owner or a collaborator with push access — provides the PDF. You fill
 `courses.json`, find the video, check the build, commit and push: on every push to `main`,
-GitHub Actions builds the site and publishes it (`.github/workflows/deploy.yml`). `docs/` is
-local build output, never committed. Rules in `CLAUDE.md` apply (PDFs in `slides/` are
-originals; public URLs never change).
+GitHub Actions builds the site and publishes it (`.github/workflows/deploy.yml`); the built
+site is never committed. Rules in `CLAUDE.md` apply (PDFs in `slides/` are originals; public
+URLs never change).
 
 ## 0. Up to date
 
@@ -101,8 +101,8 @@ The first `<title>` is the playlist; then one id + title per video. Find the tit
 ## 4. Build and check
 
 ```bash
-python3 build.py
-grep -o '<pdf name>\|<video id>[^"]*' docs/course/<slug>/index.html | sort -u
+python3 build.py --out /tmp/aig-site
+grep -o '<pdf name>\|<video id>[^"]*' /tmp/aig-site/course/<slug>/index.html | sort -u
 ```
 
 The lecture count for the course must have gone up, and both the PDF and the video link must be
