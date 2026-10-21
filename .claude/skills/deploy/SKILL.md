@@ -1,15 +1,16 @@
 ---
 name: deploy
-description: Add a new lecture to the course site and deploy it. The user gives a lecture PDF (a path, or a file they dropped into slides/<course>/); fill its entry in courses.json from the cover, find its video on the course playlist, build docs/, then commit and push — the push deploys. Use when the user adds or provides lecture slides, or asks to deploy or publish a lecture.
+description: Add a new lecture to the course site and deploy it. The user gives a lecture PDF (a path, or a file they dropped into slides/<course>/); fill its entry in courses.json from the cover, find its video on the course playlist, check the build, then commit and push — the push deploys. Use when the user adds or provides lecture slides, or asks to deploy or publish a lecture.
 argument-hint: "[path/to/lecture.pdf]"
 ---
 
 # Deploy a lecture
 
 The user — the owner or a collaborator with push access — provides the PDF. You fill
-`courses.json`, find the video, build `docs/`, commit and push: GitHub Pages publishes `docs/`
-from `main` on every push (Deploy from a branch: `main`, `/docs`). Rules in `CLAUDE.md` apply
-(PDFs in `slides/` are originals; public URLs never change).
+`courses.json`, find the video, check the build, commit and push: on every push to `main`,
+GitHub Actions builds the site and publishes it (`.github/workflows/deploy.yml`). `docs/` is
+local build output, never committed. Rules in `CLAUDE.md` apply (PDFs in `slides/` are
+originals; public URLs never change).
 
 ## 0. Up to date
 
@@ -106,7 +107,7 @@ grep -o '<pdf name>\|<video id>[^"]*' docs/course/<slug>/index.html | sort -u
 
 The lecture count for the course must have gone up, and both the PDF and the video link must be
 on the page. A build failure (`listed in courses.json but no PDF`) means a wrong `"pdf"` name —
-fix it and build again; `docs/` from a failed build must never be committed.
+fix it and build again: pushed as it is, it would fail the deploy.
 
 Only content changed, so no visual check is needed. If templates, `assets/` or `build.py`
 changed, render light, dark and 390 px wide first (`CLAUDE.md`).
@@ -117,17 +118,19 @@ The push is the deploy. Push only when the user asked to deploy or publish (`/de
 if they only asked to prepare a lecture, stop here and give them these commands instead.
 
 ```bash
-git add slides/<slug>/<new pdf> courses.json docs
+git add slides/<slug>/<new pdf> courses.json
 git commit -m "<Course short name>: Lecture N — <title>"
 git pull --rebase && git push
+gh run list --workflow deploy.yml --limit 1    # this push's Deploy run: wait for ✓, about a minute
 ```
 
-- Commit only this lecture: the new PDF, `courses.json` and `docs/`. Other uncommitted changes — name them and leave them out.
-- Rebase conflict (someone pushed meanwhile): keep both sides in `courses.json`, then
-  `python3 build.py`, `git add courses.json docs`, `git rebase --continue`. Never hand-merge
-  `docs/` — rebuild it.
+- Commit only this lecture: the new PDF and `courses.json`. Other uncommitted changes — name them and leave them out.
+- Rebase conflict (someone pushed meanwhile): keep both sides in `courses.json`, check that
+  `python3 build.py` passes, then `git add courses.json` and `git rebase --continue`.
 - Push refused for permission: the user needs collaborator access — the owner adds them under
   **Settings → Collaborators** (or they fork and open a pull request; it deploys when merged).
+- The Deploy run failed: its log names the cause — usually a missing PDF; fix it and push again.
+  No run for the commit at all: GitHub Actions is off for the repo (README → Hosting).
 - Never force-push.
 
 Reply with: the entry (title, sub, topics), the video (id, position) or that there is none yet,

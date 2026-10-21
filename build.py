@@ -5,8 +5,8 @@
     python3 -m http.server 8000 -d docs       # preview at http://localhost:8000/
 
 Everything on the site comes from courses.json; each lecture's PDF is slides/<slug>/<pdf>.
-GitHub Pages publishes docs/ as it is on main (Deploy from a branch: main, /docs), so build
-and commit docs/ together with the change — a push without it changes nothing on the site.
+On every push to main, GitHub Actions runs this build and publishes the docs/ it makes
+(.github/workflows/deploy.yml); docs/ is not committed. Build locally to check and preview.
 
     docs/index.html           a redirect to HOME
     docs/courses/             all courses              (templates/courses.html)
@@ -102,7 +102,7 @@ def main():
         sys.exit(f'{OUT.name}/ was not made by build.py — move its files out, then build again')
     shutil.rmtree(OUT, ignore_errors=True)
     shutil.copytree(HERE / 'assets', OUT)
-    (OUT / '.nojekyll').touch()   # serve the files as they are, no Jekyll pass
+    (OUT / '.nojekyll').touch()   # marks OUT as made by build.py (checked above)
 
     missing = []
     groups = {}

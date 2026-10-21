@@ -11,10 +11,10 @@ registration: **https://autonomous-intelligence-group.github.io/**
 | `/course/intro/` | Introduction to Autonomous Systems |
 | `/logo.png`, `/logo-text.png` | The AIG mark and wordmark — other repos hot-link them, keep the names |
 
-**Deploying is building and pushing.** [`build.py`](build.py) writes the site into `docs/`,
-which is committed; GitHub Pages publishes `docs/` from `main` on every push — about a minute.
-Always run `python3 build.py` and commit `docs/` together with your change: a push without the
-rebuilt `docs/` changes nothing on the site. Python 3 only, nothing to install.
+**Deploying is pushing.** On every push to `main`, GitHub Actions runs [`build.py`](build.py),
+which writes the site into `docs/`, and publishes it — about a minute. `docs/` is not committed,
+so each PDF and logo is stored once, in `slides/` and `assets/`; build locally only to check a
+change. Python 3 only, nothing to install.
 
 ## Adding a lecture
 
@@ -43,16 +43,17 @@ The same for both courses:
    `intro` starts at Lecture 1, so `index` = N; `engineering` starts at Lecture 0, so `index` =
    N + 1. A link with only `list` and `index` (no `v=`) does not work — YouTube then starts at
    the first video.
-4. **Build, commit and push** (or open a pull request — it deploys when merged):
+4. **Check, commit and push** (or open a pull request — it deploys when merged):
    ```bash
    python3 build.py
-   git add slides courses.json docs
+   git add slides courses.json
    git commit -m "Intro: Lecture 6 — State Estimation (II)"
    git push
    ```
 
 A lecture without a video shows its PDF alone. If `courses.json` lists a PDF that is not in
-`slides/`, the build fails — fix it before committing; never commit `docs/` from a failed build.
+`slides/`, the build fails — fix it before pushing: pushed, it fails the deploy, and the site
+stays as it was.
 
 ## Checking before pushing
 
@@ -61,7 +62,8 @@ python3 build.py                          # prints the lectures per course
 python3 -m http.server 8000 -d docs       # http://localhost:8000/ — Ctrl+C to stop
 ```
 
-`docs/` is output only — deleted and rebuilt on every build, so never put files there.
+`docs/` is output only — deleted and rebuilt on every build and never committed, so never put
+files there.
 
 ## Other changes
 
@@ -82,10 +84,25 @@ python3 -m http.server 8000 -d docs       # http://localhost:8000/ — Ctrl+C to
 | `assets/` | `style.css` and the logos, copied to the site root |
 | `assets/logos/` | `logo` and `logo-text` on a transparent background, as SVG and PNG (4× the original size) |
 | `build.py` | Fills the templates → `docs/`. Python 3, standard library only |
-| `docs/` | The built site, as published — never edit by hand |
+| `docs/` | The built site, for the local preview — not committed; never edit by hand |
+| `.github/workflows/deploy.yml` | On every push to `main`: runs `build.py` and publishes `docs/` |
 | `CLAUDE.md` | Conventions for an AI agent working in this repo |
 | `.claude/skills/deploy/` | Claude Code `/deploy <pdf>`: all of "Adding a lecture" — fills `courses.json`, finds the video, builds, commits and pushes |
 
-## Setup
+## Hosting
 
-Done: GitHub Pages deploys from a branch — `main`, folder `/docs`.
+- **Repo.** `Autonomous-Intelligence-Group/autonomous-intelligence-group.github.io` — a repo
+  named `<organization>.github.io` is the organization's own site, served at the root of the
+  domain. Renaming it moves the site.
+- **Pages.** Settings → Pages → Source: GitHub Actions. Each push to `main` runs the **Deploy**
+  workflow ([`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)): it runs `build.py`
+  and publishes the `docs/` it makes. Its runs are in the **Actions** tab; a failed run
+  publishes nothing, and the site stays as it was.
+- **Actions.** The organization enables GitHub Actions for this repo only: organization
+  Settings → Actions → General → Policies → selected repositories. With Actions off, a push
+  silently deploys nothing — the site stays at its last deploy.
+- **The old address**, `https://olehsamoilenko.github.io/aig-materials/` (until 2026-10-21), is
+  served by [`olehsamoilenko/olehsamoilenko.github.io`](https://github.com/olehsamoilenko/olehsamoilenko.github.io):
+  every old link redirects to the same path here, and it keeps copies of `logo.png` and
+  `logo-text.png`, which the Lab 1 READMEs embed. Keep that repo, and never create one named
+  `aig-materials` in that account — it would take the old address over.

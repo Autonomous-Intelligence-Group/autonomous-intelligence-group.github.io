@@ -7,10 +7,10 @@ Readers are students and applicants. How to add a lecture, preview and deploy is
 ## Layout and flow
 
 `courses.json` (everything shown) + `slides/<slug>/*.pdf` + `templates/` + `assets/` →
-`build.py` → `docs/` (committed) → GitHub Pages publishes it on every push to `main`
-(**Deploy from a branch: `main`, `/docs`** — not GitHub Actions: the owner's account is locked
-for Actions over billing). A change goes live only with its rebuilt `docs/` in the same push.
-Python 3, standard library only.
+`build.py` → `docs/` → GitHub Pages. On every push to `main`, GitHub Actions
+(`.github/workflows/deploy.yml`) runs the build and publishes its `docs/`; the org enables
+Actions for this repo only — keep it so (README → Hosting). `docs/` is not committed, so every
+file is stored once, in its source folder. Python 3, standard library only.
 
 | URL | Page |
 |---|---|
@@ -44,8 +44,8 @@ Adding a lecture: the `deploy` skill (`.claude/skills/deploy/`) — fill, build,
   confirm id and order from the playlist feed —
   `https://www.youtube.com/feeds/videos.xml?playlist_id=<id>` lists ids and titles in order —
   or a video's title via `https://www.youtube.com/oembed?url=https://youtu.be/<id>&format=json`.
-- **The build fails on a listed PDF that is missing** — keep it that way, and never commit
-  `docs/` from a failed build: the live site is whatever `docs/` on `main` holds.
+- **The build fails on a listed PDF that is missing** — keep it that way: on GitHub a failed
+  build publishes nothing, so the live site stays at the last good build.
 
 ## Design (decided with the owner — keep unless asked)
 
