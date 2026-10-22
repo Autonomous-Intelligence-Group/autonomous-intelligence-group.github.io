@@ -1,4 +1,4 @@
-/* Shared by the all-courses page and every course page (site/build.py copies it to the root).
+/* Shared by the all-courses page, every course page and About us (site/build.py copies it to the root).
    Palette, type and geometry follow ref/academic.css, the lecture-deck theme: monochrome,
    square corners, hard offset shadows. The dark header is the deck's cover slide. */
 
@@ -201,7 +201,7 @@ h2 {
 .section-head a:hover { color: var(--fg); border-color: var(--fg); }
 
 ol { list-style: none; margin: 0; padding: 0; }
-.lecture {
+.lecture, .entry {             /* an entry on About us is laid out as a lecture */
   display: grid;
   grid-template-columns: 64px 1fr auto;
   gap: 4px 20px;
@@ -214,7 +214,7 @@ ol { list-style: none; margin: 0; padding: 0; }
   color: var(--fg-3);
   letter-spacing: 0.02em;
 }
-.lecture h3 {
+.lecture h3, .entry h3, .person h3 {
   margin: 2px 0 4px;
   font: 700 21px/1.2 'Rajdhani', sans-serif;
   letter-spacing: 0.06em;
@@ -258,6 +258,104 @@ ol { list-style: none; margin: 0; padding: 0; }
   color: var(--warn);
 }
 
+/* ── About us ───────────────────────────────────────────────────── */
+.icon { width: 18px; height: 18px; flex: none; fill: currentColor; }   /* Simple Icons, one ink */
+.num .icon { width: 34px; height: 34px; }
+.channel { grid-template-columns: 64px 1fr auto; }   /* Discord over the photos: one column, */
+.channel .num { display: flex; justify-self: center; align-self: center; }   /* its icon centred in it */
+.link:has(.icon) { justify-content: flex-start; align-items: center; gap: 8px; }
+.link:has(.icon) span { margin-left: auto; padding-left: 4px; }
+.link .icon { width: 16px; height: 16px; }
+.link img.icon { width: auto; height: 14px; filter: var(--logo-filter); }   /* the IM mark */
+.entry .links { min-width: 160px; }   /* one button per entry: the same width in every entry */
+
+.prose { max-width: 720px; }
+.prose p { margin: 24px 0 0; }
+.lead { font-size: 20px; line-height: 1.5; }
+.chip {                        /* "community": inverted, square, in the type of the buttons */
+  padding: 2px 8px 1px;
+  background: var(--ink);
+  color: var(--bg);
+  font: 700 1em/1 'Rajdhani', sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.prose a, .sub a, .mail { text-underline-offset: 3px; text-decoration-color: var(--fg-3); }
+.prose a:hover, .sub a:hover, .mail:hover { text-decoration-color: currentColor; }
+
+.course-list { margin: 14px 0 0; padding: 0; list-style: none; }
+.course-list li {              /* the dot, when there is one, in a column of its own */
+  display: grid;
+  grid-template-columns: 12px 1fr;
+  gap: 2px 14px;
+  align-items: center;
+}
+.course-list li + li { margin-top: 12px; }
+.course-list .dot { grid-area: 1 / 1; align-self: start; margin-top: 5px; }   /* on the name's first line */
+.course-list a, .course-list small { grid-column: 2; }
+.course-list small { font-size: 15px; color: var(--fg-3); }
+.course-list a {
+  font: 700 18px/1.2 'Rajdhani', sans-serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+.course-list a:hover { text-decoration-color: var(--fg-3); }
+.tag {                         /* "TBA" before a title: boxed, in the page's grey — not a third colour */
+  display: inline-block;
+  margin-right: 4px;
+  padding: 3px 6px 2px;
+  border: 1px solid currentColor;
+  font: 400 11px/1 'Space Mono', monospace;
+  letter-spacing: 0.1em;
+  vertical-align: 3px;
+  color: var(--fg-3);
+}
+
+.partners {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr));
+  gap: 24px;
+  margin-top: 26px;
+}
+.partner {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 16px 20px;
+  border: 2px solid var(--ink);
+  box-shadow: 4px 4px 0 var(--ink);
+  font: 700 17px/1.2 'Rajdhani', sans-serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: transform .08s, box-shadow .08s;
+}
+.partner:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--ink); }
+.partner .mark { flex: none; width: 104px; display: flex; justify-content: center; }
+.partner img { display: block; height: 56px; width: auto; filter: var(--logo-filter); }   /* black ink; white in dark mode */
+.partner img.im { height: 32px; }   /* the IM plate reads heavier than the KAU mark at one height */
+.partner .arrow { margin-left: auto; font: 400 13px/1 'Space Mono', monospace; color: var(--fg-3); }
+.partner:focus-visible { outline: 2px solid var(--gray-400); outline-offset: 3px; }
+
+.people {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(400px, 100%), 1fr));
+  gap: 28px 32px;
+  padding-top: 28px;
+}
+.person { display: grid; grid-template-columns: 64px 1fr; gap: 0 20px; align-items: start; }
+.photo {                       /* in colour, as on the posters: content, not a third UI colour */
+  grid-row: span 2;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;          /* a circle, as on the posters — bare: a hard shadow on it reads as a stray crescent */
+}
+.mail { font: 400 14px/1.4 'Space Mono', monospace; color: var(--fg-2); }
+.person .links { grid-column: 2; justify-self: start; margin-top: 14px; }
+
 footer {
   display: flex;
   align-items: center;
@@ -287,8 +385,17 @@ footer img {
   .actions .btn { flex: 1 1 100%; justify-content: center; }
   .card { padding: 22px 20px 24px; }
   .card h3 { font-size: 26px; }
-  .lecture { grid-template-columns: 44px 1fr; }
+  .lecture, .entry { grid-template-columns: 44px 1fr; }
   .num { font-size: 28px; }
+  .num .icon { width: 28px; height: 28px; }
+  .channel { grid-template-columns: 64px 1fr; }
   .links { grid-column: 1 / -1; gap: 8px; margin-top: 14px; }   /* the whole row: three fit */
   .link { gap: 8px; padding-inline: 10px; }
+  .lead { font-size: 18px; }
+  .partner { padding: 14px 16px; gap: 14px; font-size: 16px; }
+  .partner .mark { width: 84px; }
+  .partner img { height: 48px; }
+  .partner img.im { height: 26px; }
+  .photo { grid-row: auto; }
+  .person .links { grid-column: 1 / -1; justify-self: stretch; }   /* under the photo, full width */
 }

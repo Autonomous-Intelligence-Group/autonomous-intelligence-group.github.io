@@ -9,6 +9,7 @@ registration: **https://autonomous-intelligence-group.github.io/**
 | `/courses/` | All courses |
 | `/courses/engineering/` | Autonomous Robotic Systems Engineering |
 | `/courses/intro/` | Introduction to Autonomous Systems |
+| `/about-us/` | About us: who we are, how to get involved, affiliation, how to reach us |
 | `/course/…` | The old addresses (until 2026-10-21): the course pages redirect to `/courses/…`, and the not-found page sends any other old link — a PDF, slides — to the same path under `/courses/` |
 | `/logo.svg`, `/logo-text.svg`, `/logo.png`, `/logo-text.png` | The AIG mark and wordmark on a transparent ground (PNG at 4×) — other repos may embed them, keep the names |
 
@@ -79,7 +80,8 @@ Both build into a temporary folder and delete it afterwards, so the project gets
 |---|---|
 | A new course | one more object in `courses.json` — `slug` (its URL), `status` (the heading it goes under; `Ongoing` gets the green dot), `title`, `eyebrow`, `tagline`, `register`, `playlist`, `lectures`, `videos` — and a `slides/<slug>/` folder |
 | Form and playlist links | `courses.json` |
-| LinkedIn | `templates/courses.html` |
+| About us — its text, links (the form, YouTube, LinkedIn), the people | `templates/about.html`. Its course list gets a green dot per course that `courses.json` has as `Ongoing`; the words around it ("running now") are yours to update when a course starts or ends |
+| A photo on About us | `assets/about-us/<name>.jpg` — a square head-and-shoulders crop, 256×256 JPEG (shown as a 64 px circle), metadata stripped |
 | Footer (same on every page) | `FOOTER` in `build.py` |
 | Where `/` goes | `HOME` in `build.py` |
 | Look | `assets/style.css` — monochrome, square corners, hard shadows, like the lecture decks |
@@ -89,8 +91,8 @@ Both build into a temporary folder and delete it afterwards, so the project gets
 | `courses.json` | Everything the site shows |
 | `slides/<course>/` | The lecture PDFs; for engineering also the HTML slides (`<pdf name>.html`) and their `img/` |
 | `import_slides.py` | Brings a lecture's HTML slides in, without the speaker notes |
-| `templates/` | `courses.html` (all courses) and `course.html` (one course) |
-| `assets/` | `style.css` and the logos — `logo` (the mark) and `logo-text` (the wordmark) on a transparent ground, as SVG and PNG (4×) — copied to the site root; the favicon is made from `logo.svg` |
+| `templates/` | `courses.html` (all courses), `course.html` (one course) and `about.html` (About us) |
+| `assets/` | `style.css` and the logos — `logo` (the mark) and `logo-text` (the wordmark) on a transparent ground, as SVG and PNG (4×) — copied to the site root; the favicon is made from `logo.svg`. `about-us/`: the photos and the IM and KAU marks (black ink on transparency) that About us shows, copied to `/about-us/` |
 | `build.py` | Fills the templates → the site. Python 3, standard library only |
 | `.github/workflows/deploy.yml` | On every push to `main`: `build.py --out _site`, then publishes `_site/` |
 | `CLAUDE.md` | Conventions for an AI agent working in this repo |

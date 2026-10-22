@@ -19,6 +19,7 @@ source folder. Python 3, standard library only.
 | `/courses/` | All courses |
 | `/courses/engineering/` | Autonomous Robotic Systems Engineering |
 | `/courses/intro/` | Introduction to Autonomous Systems |
+| `/about-us/` | About us (`templates/about.html`; its photos and partner marks in `assets/about-us/`) |
 | `/course/…` | Old addresses (until 2026-10-21): redirect pages for the courses, `404.html` for the rest (PDFs, slides) — keep both |
 | `/logo.svg`, `/logo-text.svg`, `/logo.png`, `/logo-text.png` | The logos, transparent (PNG at 4×), each stored once in `assets/` — other repos may embed them: never rename or move |
 
@@ -58,7 +59,7 @@ Adding a lecture: the `deploy` skill (`.claude/skills/deploy/`) — fill, build,
 - The look of the lecture decks: monochrome, Rajdhani / DM Sans / Space Mono, square corners,
   hard offset shadows, dark cover-style header. **Two colours only:** the green dot of
   "Ongoing courses" and the red *(GIFs don't play)*. Light and dark mode both.
-- `/courses/`: large AIG wordmark + LinkedIn button; no page title; courses grouped under
+- `/courses/`: large AIG wordmark + **About us →** button; no page title; courses grouped under
   "<status> courses"; each card: eyebrow, title, tagline, **Course content →** button,
   **Register ↗** as a text link. No "latest lecture" line.
 - Eyebrow is "Master's course" for both — no university name in it.
@@ -66,8 +67,18 @@ Adding a lecture: the `deploy` skill (`.claude/skills/deploy/`) — fill, build,
   row of separate buttons of one size (not stacked, not merged): **Slides** (the HTML slides,
   engineering only), **PDF** (size measured by the build; a small red *(GIFs don't play)* under
   it when the slides have GIFs), **Video**. Intro has the same row without Slides.
-- Footer on every page (`FOOTER` in `build.py`): logo · Autonomous Intelligence Group ·
-  Kyiv Academic University (kau.org.ua) · Institute of Mathematics NAS of Ukraine
+- About us: the course-page header without a tagline — **← All courses**; **Join us** (the same
+  Google Form as the courses' Register), Recordings (the YouTube channel), LinkedIn — then:
+  Who we are (*community*, *autonomous* inverted: ink block, page-colour capitals) · **Get involved**, inviting
+  rather than listing (entries laid out as lectures; the green dot before each ongoing course;
+  *TBA* a grey tag) · Affiliation (IM and KAU marks in one ink, inverted in dark mode; no
+  sponsors) · Reach us (Discord, its icon centred over the photos; the people: bare round photos
+  in colour, 64 px — content, not a third UI colour; nothing under the name but the email).
+  Icons are Simple Icons (CC0), inline, in the colour of the text. The dots follow `status` in
+  `courses.json`; the words ("Two master's courses, running now") do not — edit them in
+  `templates/about.html` when a course starts or ends.
+- Footer on every page (`FOOTER` in `build.py`): logo · Autonomous Intelligence Group · About us
+  · Kyiv Academic University (kau.org.ua) · Institute of Mathematics NAS of Ukraine
   (imath.kiev.ua). No year.
 - Before pushing a visual change, render it — light, dark and 390 px wide — and look:
   ```bash

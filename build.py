@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the site: an all-courses page and one page per course.
+"""Build the site: an all-courses page, one page per course and About us.
 
     python3 build.py               # build into a temporary folder to check it, then delete it
     python3 build.py --serve       # the same, and preview it at http://localhost:8000/
@@ -15,6 +15,7 @@ each PDF and logo once.
     index.html           a redirect to HOME
     courses/             all courses              (templates/courses.html)
     courses/<slug>/      one course + its slides/ (templates/course.html)
+    about-us/            About us (templates/about.html) + its photos and logos (assets/about-us/)
     course/, course/<slug>/  redirects to courses/, courses/<slug>/ — the old addresses
     404.html             not found; sends any other old course/… link on (templates/404.html)
     logo*.svg, logo*.png, style.css               (assets/)
@@ -40,8 +41,9 @@ HERE = Path(__file__).resolve().parent
 HOME = 'courses/engineering/'
 esc = html.escape
 
-# The same on every page.
+# The same on every page; fill() puts it in before {{ROOT}} is filled.
 FOOTER = ('<span>Autonomous Intelligence Group</span>'
+          ' · <a href="{{ROOT}}about-us/">About us</a>'
           ' · <a href="https://kau.org.ua/" target="_blank" rel="noopener">Kyiv Academic University</a>'
           ' · <a href="https://www.imath.kiev.ua/" target="_blank" rel="noopener">Institute of Mathematics NAS of Ukraine</a>')
 
@@ -89,6 +91,8 @@ GROUP = '''  <section>
 {cards}
     </div>
   </section>'''
+# About us lists the courses in its own words; {{DOT:<slug>}} marks the ongoing ones.
+DOT = '<span class="dot live"></span>'
 
 
 # HTML slides (Marp's export, brought in by import_slides.py) load their pictures from img/.
@@ -114,9 +118,12 @@ def row(lec, pdf, videos, deck=None, gifs=False):
 
 
 def fill(template, dest, **values):
-    text = (HERE / 'templates' / template).read_text()
+    text = (HERE / 'templates' / template).read_text().replace('{{FOOTER}}', FOOTER)
     for key, value in values.items():
         text = text.replace('{{' + key + '}}', value)
+    left = re.search(r'{{[^}]*}}', text)   # e.g. About us naming a course courses.json no longer has
+    if left:
+        sys.exit(f'templates/{template}: nothing fills {left.group()}')
     dest.parent.mkdir(parents=True, exist_ok=True)
     dest.write_text(text)
 
@@ -136,7 +143,9 @@ def build(out):
     missing = []
     lost = []
     groups = {}
+    dots = {}
     for c in json.loads((HERE / 'courses.json').read_text()):
+        dots['DOT:' + c['slug']] = DOT if c['status'] == 'Ongoing' else ''
         page = out / 'courses' / c['slug']
         (page / 'slides').mkdir(parents=True)
         # The old address, course/<slug>/ (until 2026-10-21), sends readers on.
@@ -170,7 +179,7 @@ def build(out):
         # Register leads when a course has a form; otherwise the recordings do.
         actions = [BUTTON.format(cls='primary', url=esc(c['register']), label='Register')] if c.get('register') else []
         actions.append(BUTTON.format(cls='ghost' if actions else 'primary', url=esc(c['playlist']), label='Recordings'))
-        fill('course.html', page / 'index.html', ROOT='../../', FOOTER=FOOTER,
+        fill('course.html', page / 'index.html', ROOT='../../',
              TITLE=esc(c['title']), EYEBROW=esc(c['eyebrow']), TAGLINE=esc(c['tagline']),
              ACTIONS='\n'.join(actions), LECTURES='\n'.join(rows))
 
@@ -180,14 +189,15 @@ def build(out):
         ))
         print(f'courses/{c["slug"]}/: {len(rows)} lectures' + (f', {decks} with HTML slides' if decks else ''))
 
-    fill('courses.html', out / 'courses' / 'index.html', ROOT='../', FOOTER=FOOTER, COURSES='\n'.join(
+    fill('courses.html', out / 'courses' / 'index.html', ROOT='../', COURSES='\n'.join(
         GROUP.format(status=esc(status), live=' live' if status == 'Ongoing' else '', cards='\n'.join(cards))
         for status, cards in groups.items()))
+    fill('about.html', out / 'about-us' / 'index.html', ROOT='../', **dots)
     (out / 'index.html').write_text(REDIRECT.format(url=HOME))
     (out / 'course').mkdir(exist_ok=True)   # the old address of the course pages, as a whole
     (out / 'course' / 'index.html').write_text(REDIRECT.format(url='../courses/'))
     # Served for any missing path, at any depth: its links start at the site root.
-    fill('404.html', out / '404.html', ROOT='/', FOOTER=FOOTER)
+    fill('404.html', out / '404.html', ROOT='/')
 
     if missing:
         # Fail rather than publish a course with a lecture silently gone.
