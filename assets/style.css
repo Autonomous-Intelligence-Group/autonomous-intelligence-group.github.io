@@ -214,7 +214,7 @@ ol { list-style: none; margin: 0; padding: 0; }
   color: var(--fg-3);
   letter-spacing: 0.02em;
 }
-.lecture h3, .entry h3, .person h3 {
+.lecture h3, .entry h3 {
   margin: 2px 0 4px;
   font: 700 21px/1.2 'Rajdhani', sans-serif;
   letter-spacing: 0.06em;
@@ -280,8 +280,8 @@ ol { list-style: none; margin: 0; padding: 0; }
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
-.prose a, .sub a, .mail { text-underline-offset: 3px; text-decoration-color: var(--fg-3); }
-.prose a:hover, .sub a:hover, .mail:hover { text-decoration-color: currentColor; }
+.prose a, .sub a { text-underline-offset: 3px; text-decoration-color: var(--fg-3); }
+.prose a:hover, .sub a:hover { text-decoration-color: currentColor; }
 
 .course-list { margin: 14px 0 0; padding: 0; list-style: none; }
 .course-list li {              /* the dot, when there is one, in a column of its own */
@@ -306,8 +306,8 @@ ol { list-style: none; margin: 0; padding: 0; }
 .tag {                         /* "TBA" before a title: boxed, in the page's grey — not a third colour */
   display: inline-block;
   margin-right: 4px;
-  padding: 3px 6px 2px;
-  border: 1px solid currentColor;
+  padding: 2px 5px 1px;
+  border: 2px solid currentColor;   /* the 2 px of every frame on the site */
   font: 400 11px/1 'Space Mono', monospace;
   letter-spacing: 0.1em;
   vertical-align: 3px;
@@ -340,21 +340,15 @@ ol { list-style: none; margin: 0; padding: 0; }
 .partner .arrow { margin-left: auto; font: 400 13px/1 'Space Mono', monospace; color: var(--fg-3); }
 .partner:focus-visible { outline: 2px solid var(--gray-400); outline-offset: 3px; }
 
-.people {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(400px, 100%), 1fr));
-  gap: 28px 32px;
-  padding-top: 28px;
-}
-.person { display: grid; grid-template-columns: 64px 1fr; gap: 0 20px; align-items: start; }
+/* A person is an entry: the photo where the Discord icon is; Email, LinkedIn, IM in a row */
 .photo {                       /* in colour, as on the posters: content, not a third UI colour */
-  grid-row: span 2;
   width: 64px;
   height: 64px;
   border-radius: 50%;          /* a circle, as on the posters — bare: a hard shadow on it reads as a stray crescent */
 }
-.mail { font: 400 14px/1.4 'Space Mono', monospace; color: var(--fg-2); }
-.person .links { grid-column: 2; justify-self: start; margin-top: 14px; }
+@media (max-width: 860px) {    /* three labelled buttons no longer fit beside the name: under it */
+  .person .links { grid-column: 1 / -1; margin-top: 14px; }
+}
 
 footer {
   display: flex;
@@ -396,6 +390,6 @@ footer img {
   .partner .mark { width: 84px; }
   .partner img { height: 48px; }
   .partner img.im { height: 26px; }
-  .photo { grid-row: auto; }
-  .person .links { grid-column: 1 / -1; justify-self: stretch; }   /* under the photo, full width */
+  .person .link { gap: 0; justify-content: center; font-size: 0; }   /* three fit as icons only; */
+  .person .link span { display: none; }                             /* the words stay for screen readers */
 }

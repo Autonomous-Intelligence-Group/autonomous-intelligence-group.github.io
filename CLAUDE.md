@@ -74,9 +74,12 @@ Adding a lecture: the `deploy` skill (`.claude/skills/deploy/`) — fill, build,
   Who we are (*community*, *autonomous* inverted: ink block, page-colour capitals) · **Get involved**, inviting
   rather than listing (entries laid out as lectures; the green dot before each ongoing course;
   *TBA* a grey tag) · Affiliation (IM and KAU marks in one ink, inverted in dark mode; no
-  sponsors) · Reach us (Discord, its icon centred over the photos; the people: bare round photos
-  in colour, 64 px — content, not a third UI colour; nothing under the name but the email).
-  Icons are Simple Icons (CC0), inline, in the colour of the text. The dots follow `status` in
+  sponsors) · Reach us (entries too, one column for the Discord icon and the photos: Discord, then
+  each person — a bare round photo in colour, 64 px, content, not a third UI colour; the name,
+  "PhD in Applied Mathematics"; **LinkedIn**, **Email** (an envelope; the address only in its
+  tooltip), **Profile** (IM): three buttons of one size in a row — under the name below
+  860 px, icons only on a phone). Icons are Simple Icons (CC0) and a square envelope, inline,
+  in the colour of the text. The dots follow `status` in
   `courses.json`; the words ("Two master's courses, running now") do not — edit them in
   `templates/about.html` when a course starts or ends.
 - Footer on every page (`FOOTER` in `build.py`): logo · Autonomous Intelligence Group · About us
