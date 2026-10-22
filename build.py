@@ -26,6 +26,7 @@ files there.
 """
 import argparse
 import functools
+import hashlib
 import html
 import http.server
 import json
@@ -40,6 +41,11 @@ HERE = Path(__file__).resolve().parent
 # engineering course. Set to 'courses/' once the all-courses page should be the front door.
 HOME = 'courses/engineering/'
 esc = html.escape
+
+# Pages link style.css?v={{CSS}}, a hash of its content: a browser keeps the site's files for
+# 10 minutes (GitHub Pages: max-age=600), and a new page with the stylesheet held from before
+# falls apart. A new stylesheet gets a new address, so it is fetched with the page.
+CSS = hashlib.sha256((HERE / 'assets' / 'style.css').read_bytes()).hexdigest()[:10]
 
 # The same on every page; fill() puts it in before {{ROOT}} is filled.
 FOOTER = ('<span>Autonomous Intelligence Group</span>'
@@ -118,7 +124,7 @@ def row(lec, pdf, videos, deck=None, gifs=False):
 
 
 def fill(template, dest, **values):
-    text = (HERE / 'templates' / template).read_text().replace('{{FOOTER}}', FOOTER)
+    text = (HERE / 'templates' / template).read_text().replace('{{FOOTER}}', FOOTER).replace('{{CSS}}', CSS)
     for key, value in values.items():
         text = text.replace('{{' + key + '}}', value)
     left = re.search(r'{{[^}]*}}', text)   # e.g. About us naming a course courses.json no longer has

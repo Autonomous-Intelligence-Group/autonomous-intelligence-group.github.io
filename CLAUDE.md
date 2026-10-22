@@ -11,7 +11,9 @@ Readers are students and applicants. How to add a lecture, preview and deploy is
 (`.github/workflows/deploy.yml`) runs `build.py --out _site` and publishes `_site/`; the org
 enables Actions for this repo only — keep it so (README → Hosting). The built site is never
 committed and a local build goes to a temporary folder, so every file is stored once, in its
-source folder. Python 3, standard library only.
+source folder. Python 3, standard library only. Pages link `style.css?v=<hash of it>` (`CSS` in
+`build.py`): browsers keep the site's files 10 minutes, and a new page with the stylesheet held
+from before falls apart (it did, 2026-10-22) — keep it.
 
 | URL | Page |
 |---|---|
