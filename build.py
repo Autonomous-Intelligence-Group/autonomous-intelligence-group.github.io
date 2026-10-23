@@ -88,10 +88,9 @@ VIDEO ='\n          <a class="link" href="{url}" target="_blank" rel="noopener">
 # Under the lectures of an ongoing course: the list is not the whole course, and one can still join.
 MORE = '''
   <div class="entry more">
-    <span class="dot live"></span>
     <div class="body">
       <h3>More lectures to come</h3>
-      <p class="sub">Ongoing until {until}{register}</p>
+      <p class="sub"><span class="dot live"></span>Ongoing until {until}{register}</p>
     </div>
   </div>'''
 # The course's form, in the text as About us links it — not a button.

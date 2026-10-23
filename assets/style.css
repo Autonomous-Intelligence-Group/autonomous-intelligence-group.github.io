@@ -351,7 +351,8 @@ ol { list-style: none; margin: 0; padding: 0; }
 }
 
 /* ── Course page, under the lectures: more to come, and who teaches it ── */
-.more .dot { margin-top: 9px; }   /* the green dot of "ongoing", on the title's line */
+.more .body { grid-column: 2; }   /* no number: in line with the lecture titles */
+.more .dot { display: inline-block; margin-right: 10px; }   /* the green dot before "Ongoing", on the baseline: as high as its capitals */
 .lecturer { margin-top: 48px; }
 .lecturer .person { padding-top: 14px; }   /* the About us entry, smaller */
 .lecturer .photo { width: 48px; height: 48px; }

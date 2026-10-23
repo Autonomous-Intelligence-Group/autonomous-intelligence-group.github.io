@@ -69,9 +69,10 @@ Adding a lecture: the `deploy` skill (`.claude/skills/deploy/`) — fill, build,
   row of separate buttons of one size (not stacked, not merged): **Slides** (the HTML slides,
   engineering only), **PDF** (size measured by the build; a small red *(GIFs don't play)* under
   it when the slides have GIFs), **Video**. Intro has the same row without Slides. Under the
-  lectures of an `Ongoing` course, an entry with the green dot: **More lectures to come**,
-  "Ongoing until <`until`> — you can still *register ↗*" (the form as a link in the text, as
-  About us links — not a button). At the end, small: **Lecturer** and the course's `lecturer` — the
+  lectures of an `Ongoing` course, an entry without a number: **More lectures to come**,
+  "● Ongoing until <`until`> — you can still *register ↗*" (the green dot in the line, before
+  "Ongoing" — in the number column or beside the title it looked off; the form as a link in
+  the text, as About us links — not a button). At the end, small: **Lecturer** and the course's `lecturer` — the
   same entry as on About us, photo 48 px (44 on a phone, in line with the lecture titles).
 - About us: the course-page header without a tagline — **← All courses**; **Join us** (the same
   Google Form as the courses' Register), Recordings (the YouTube channel), LinkedIn — then:
