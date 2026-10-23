@@ -23,13 +23,14 @@ from before falls apart (it did, 2026-10-22) — keep it.
 | `/courses/intro/` | Introduction to Autonomous Systems |
 | `/about-us/` | About us (`templates/about.html`; its photos and partner marks in `assets/about-us/`) |
 | `/course/…` | Old addresses (until 2026-10-21): redirect pages for the courses, `404.html` for the rest (PDFs, slides) — keep both |
-| `/logo.svg`, `/logo-text.svg`, `/logo.png`, `/logo-text.png` | The logos, transparent (PNG at 4×), each stored once in `assets/` — other repos may embed them: never rename or move |
+| `/logo.svg`, `/logo-text.svg`, `/logo.png`, `/logo-text.png`, `/logo-text-white.png` | The logos, transparent (PNG at 4×), each stored once in `assets/` — other repos may embed them: never rename or move. `logo-text-white.png` is `logo-text.png` in white (same alpha): black on transparency vanishes in GitHub's dark theme, so the lab READMEs pick it there with `<picture>` |
 
 URLs are public and linked from elsewhere: do not rename slugs or paths without asking. The old
 address `olehsamoilenko.github.io/aig-materials/` (until 2026-10-21) still works through the repo
 `olehsamoilenko/olehsamoilenko.github.io`: it redirects old links to the same path here and keeps
-copies of the old logos (PNG on a white ground) — the Lab 1 READMEs, the template and the
-students' copies, embed `logo-text.png` from there.
+copies of the old logos (PNG on a white ground) — the Lab 1 READMEs and the students' copies
+embed `logo-text.png` from there. From Lab 2 on, the lab READMEs embed `logo-text.png` and
+`logo-text-white.png` from this site.
 
 Adding a lecture: the `deploy` skill (`.claude/skills/deploy/`) — fill, build, commit and push
 (the push deploys).

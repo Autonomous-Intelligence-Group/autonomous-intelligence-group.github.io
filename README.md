@@ -11,7 +11,7 @@ registration: **https://autonomous-intelligence-group.github.io/**
 | `/courses/intro/` | Introduction to Autonomous Systems |
 | `/about-us/` | About us: who we are, how to get involved, affiliation, how to reach us |
 | `/course/…` | The old addresses (until 2026-10-21): the course pages redirect to `/courses/…`, and the not-found page sends any other old link — a PDF, slides — to the same path under `/courses/` |
-| `/logo.svg`, `/logo-text.svg`, `/logo.png`, `/logo-text.png` | The AIG mark and wordmark on a transparent ground (PNG at 4×) — other repos may embed them, keep the names |
+| `/logo.svg`, `/logo-text.svg`, `/logo.png`, `/logo-text.png`, `/logo-text-white.png` | The AIG mark and wordmark on a transparent ground (PNG at 4×); `logo-text-white.png` is the wordmark in white, which the lab READMEs show in GitHub's dark theme — other repos may embed them, keep the names |
 
 **Deploying is pushing.** On every push to `main`, GitHub Actions runs [`build.py`](build.py)
 and publishes the site it builds — about a minute. Each PDF and logo is stored once, in
@@ -94,7 +94,7 @@ Both build into a temporary folder and delete it afterwards, so the project gets
 | `slides/<course>/` | The lecture PDFs; for engineering also the HTML slides (`<pdf name>.html`) and their `img/` |
 | `import_slides.py` | Brings a lecture's HTML slides in, without the speaker notes |
 | `templates/` | `courses.html` (all courses), `course.html` (one course) and `about.html` (About us); `people/` (one file per person) and `icons.html` (the icons), which they share |
-| `assets/` | `style.css` and the logos — `logo` (the mark) and `logo-text` (the wordmark) on a transparent ground, as SVG and PNG (4×) — copied to the site root; the favicon is made from `logo.svg`. `about-us/`: the photos and the IM and KAU marks (black ink on transparency) that About us shows, copied to `/about-us/` |
+| `assets/` | `style.css` and the logos — `logo` (the mark) and `logo-text` (the wordmark) on a transparent ground, as SVG and PNG (4×), plus `logo-text-white.png` for dark backgrounds — copied to the site root; the favicon is made from `logo.svg`. `about-us/`: the photos and the IM and KAU marks (black ink on transparency) that About us shows, copied to `/about-us/` |
 | `build.py` | Fills the templates → the site. Python 3, standard library only |
 | `.github/workflows/deploy.yml` | On every push to `main`: `build.py --out _site`, then publishes `_site/` |
 | `CLAUDE.md` | Conventions for an AI agent working in this repo |
