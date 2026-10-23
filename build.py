@@ -52,6 +52,11 @@ FOOTER = ('<span>Autonomous Intelligence Group</span>'
           ' · <a href="{{ROOT}}about-us/">About us</a>'
           ' · <a href="https://kau.org.ua/" target="_blank" rel="noopener">Kyiv Academic University</a>'
           ' · <a href="https://www.imath.kiev.ua/" target="_blank" rel="noopener">Institute of Mathematics NAS of Ukraine</a>')
+# The icons a page shows, at its {{ICONS}}; fill() puts them in like the footer.
+ICONS = (HERE / 'templates' / 'icons.html').read_text().rstrip('\n')
+# Each person once, templates/people/<name>.html: About us shows them ({{PERSON:<name>}}), a
+# course page its lecturer ("lecturer" in courses.json).
+PEOPLE = {'PERSON:' + p.stem: p.read_text().rstrip('\n') for p in (HERE / 'templates' / 'people').glob('*.html')}
 
 # GitHub Pages has no server-side redirects: a meta refresh, with a plain link as fallback.
 REDIRECT = '''<!doctype html>
@@ -80,6 +85,17 @@ PDF = '<a class="link" href="slides/{pdf}" target="_blank" rel="noopener">PDF <s
 # A PDF shows each GIF as one still frame: said under the PDF of slides that have GIFs.
 STILLS = '<small class="stills">(GIFs don\'t play)</small>'
 VIDEO ='\n          <a class="link" href="{url}" target="_blank" rel="noopener">Video <span>↗</span></a>'
+# Under the lectures of an ongoing course: the list is not the whole course, and one can still join.
+MORE = '''
+  <div class="entry more">
+    <span class="dot live"></span>
+    <div class="body">
+      <h3>More lectures to come</h3>
+      <p class="sub">Ongoing until {until}{register}</p>
+    </div>
+  </div>'''
+# The course's form, in the text as About us links it — not a button.
+LATE = ' — you can still <a href="{url}" target="_blank" rel="noopener">register&nbsp;↗</a>'
 BUTTON = '      <a class="btn {cls}" href="{url}" target="_blank" rel="noopener">{label} ↗</a>'
 CARD = '''      <article class="card">
         <p class="meta">{eyebrow}</p>
@@ -123,10 +139,12 @@ def row(lec, pdf, videos, deck=None, gifs=False):
     )
 
 
-def fill(template, dest, **values):
-    text = (HERE / 'templates' / template).read_text().replace('{{FOOTER}}', FOOTER).replace('{{CSS}}', CSS)
+def fill(template, dest, ROOT, **values):
+    text = (HERE / 'templates' / template).read_text()
+    text = text.replace('{{FOOTER}}', FOOTER).replace('{{ICONS}}', ICONS).replace('{{CSS}}', CSS)
     for key, value in values.items():
         text = text.replace('{{' + key + '}}', value)
+    text = text.replace('{{ROOT}}', ROOT)   # last: the footer and the people link from it too
     left = re.search(r'{{[^}]*}}', text)   # e.g. About us naming a course courses.json no longer has
     if left:
         sys.exit(f'templates/{template}: nothing fills {left.group()}')
@@ -185,9 +203,14 @@ def build(out):
         # Register leads when a course has a form; otherwise the recordings do.
         actions = [BUTTON.format(cls='primary', url=esc(c['register']), label='Register')] if c.get('register') else []
         actions.append(BUTTON.format(cls='ghost' if actions else 'primary', url=esc(c['playlist']), label='Recordings'))
+        more = ''
+        if c['status'] == 'Ongoing':
+            more = MORE.format(until=esc(c['until']),
+                               register=LATE.format(url=esc(c['register'])) if c.get('register') else '')
         fill('course.html', page / 'index.html', ROOT='../../',
              TITLE=esc(c['title']), EYEBROW=esc(c['eyebrow']), TAGLINE=esc(c['tagline']),
-             ACTIONS='\n'.join(actions), LECTURES='\n'.join(rows))
+             ACTIONS='\n'.join(actions), LECTURES='\n'.join(rows), MORE=more,
+             LECTURER=PEOPLE['PERSON:' + c['lecturer']])
 
         groups.setdefault(c['status'], []).append(CARD.format(
             slug=c['slug'], eyebrow=esc(c['eyebrow']), title=esc(c['title']), tagline=esc(c['tagline']),
@@ -198,7 +221,7 @@ def build(out):
     fill('courses.html', out / 'courses' / 'index.html', ROOT='../', COURSES='\n'.join(
         GROUP.format(status=esc(status), live=' live' if status == 'Ongoing' else '', cards='\n'.join(cards))
         for status, cards in groups.items()))
-    fill('about.html', out / 'about-us' / 'index.html', ROOT='../', **dots)
+    fill('about.html', out / 'about-us' / 'index.html', ROOT='../', **dots, **PEOPLE)
     (out / 'index.html').write_text(REDIRECT.format(url=HOME))
     (out / 'course').mkdir(exist_ok=True)   # the old address of the course pages, as a whole
     (out / 'course' / 'index.html').write_text(REDIRECT.format(url='../courses/'))

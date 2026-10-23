@@ -149,7 +149,7 @@ main section + section { margin-top: 56px; }
   border: 2px solid var(--ink);
   box-shadow: 6px 6px 0 var(--ink);
 }
-.card .meta {
+.meta {                        /* a card's eyebrow; "Lecturer" on a course page */
   margin: 0;
   font: 400 12px/1.4 'Space Mono', monospace;
   letter-spacing: 0.1em;
@@ -350,6 +350,14 @@ ol { list-style: none; margin: 0; padding: 0; }
   .person .links { grid-column: 1 / -1; margin-top: 14px; }
 }
 
+/* ── Course page, under the lectures: more to come, and who teaches it ── */
+.more .dot { margin-top: 9px; }   /* the green dot of "ongoing", on the title's line */
+.lecturer { margin-top: 48px; }
+.lecturer .person { padding-top: 14px; }   /* the About us entry, smaller */
+.lecturer .photo { width: 48px; height: 48px; }
+.lecturer h3 { font-size: 17px; }
+.lecturer .sub { margin: 0; font-size: 14px; }
+
 footer {
   display: flex;
   align-items: center;
@@ -392,4 +400,6 @@ footer img {
   .partner img.im { height: 26px; }
   .person .link { gap: 0; justify-content: center; font-size: 0; }   /* three fit as icons only; */
   .person .link span { display: none; }                             /* the words stay for screen readers */
+  .lecturer .person { grid-template-columns: 44px 1fr; }   /* the name in line with the lecture titles */
+  .lecturer .photo { width: 44px; height: 44px; }
 }

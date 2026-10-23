@@ -68,14 +68,18 @@ Adding a lecture: the `deploy` skill (`.claude/skills/deploy/`) — fill, build,
 - Course page: **← All courses**, Register (button) + Recordings, then lectures — each with a
   row of separate buttons of one size (not stacked, not merged): **Slides** (the HTML slides,
   engineering only), **PDF** (size measured by the build; a small red *(GIFs don't play)* under
-  it when the slides have GIFs), **Video**. Intro has the same row without Slides.
+  it when the slides have GIFs), **Video**. Intro has the same row without Slides. Under the
+  lectures of an `Ongoing` course, an entry with the green dot: **More lectures to come**,
+  "Ongoing until <`until`> — you can still *register ↗*" (the form as a link in the text, as
+  About us links — not a button). At the end, small: **Lecturer** and the course's `lecturer` — the
+  same entry as on About us, photo 48 px (44 on a phone, in line with the lecture titles).
 - About us: the course-page header without a tagline — **← All courses**; **Join us** (the same
   Google Form as the courses' Register), Recordings (the YouTube channel), LinkedIn — then:
   Who we are (*community*, *autonomous* inverted: ink block, page-colour capitals) · **Get involved**, inviting
   rather than listing (entries laid out as lectures; the green dot before each ongoing course;
   *TBA* a grey tag) · Affiliation (IM and KAU marks in one ink, inverted in dark mode; no
   sponsors) · Reach us (entries too, one column for the Discord icon and the photos: Discord, then
-  each person — a bare round photo in colour, 64 px, content, not a third UI colour; the name,
+  each person (`templates/people/<name>.html`, one file, also a course's lecturer) — a bare round photo in colour, 64 px, content, not a third UI colour; the name,
   "PhD in Applied Mathematics"; **LinkedIn**, **Email** (an envelope; the address only in its
   tooltip), **Profile** (IM): three buttons of one size in a row — under the name below
   860 px, icons only on a phone). Icons are Simple Icons (CC0) and a square envelope, inline,
@@ -89,5 +93,8 @@ Adding a lecture: the `deploy` skill (`.claude/skills/deploy/`) — fill, build,
   ```bash
   python3 build.py --serve    # http://localhost:8000/ — or headless Chrome --screenshot on it
   ```
+  Headless Chrome's new mode lays a page out no narrower than 500 px, whatever
+  `--window-size` says — a 390 px shot then cuts off the right edge; `--headless=old` gives
+  390 (checked 2026-10-23, Chrome 131).
 
 Commit messages in English.

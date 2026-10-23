@@ -78,10 +78,12 @@ Both build into a temporary folder and delete it afterwards, so the project gets
 
 | What | Where |
 |---|---|
-| A new course | one more object in `courses.json` — `slug` (its URL), `status` (the heading it goes under; `Ongoing` gets the green dot), `title`, `eyebrow`, `tagline`, `register`, `playlist`, `lectures`, `videos` — and a `slides/<slug>/` folder |
+| A new course | one more object in `courses.json` — `slug` (its URL), `status` (the heading it goes under; `Ongoing` gets the green dot), `until` (the month an ongoing course ends), `title`, `eyebrow`, `tagline`, `lecturer` (a person in `templates/people/`), `register`, `playlist`, `lectures`, `videos` — and a `slides/<slug>/` folder |
 | Form and playlist links | `courses.json` |
-| About us — its text, links (the form, YouTube, LinkedIn), the people | `templates/about.html`. Its course list gets a green dot per course that `courses.json` has as `Ongoing`; the words around it ("running now") are yours to update when a course starts or ends |
-| A photo on About us | `assets/about-us/<name>.jpg` — a square head-and-shoulders crop, 256×256 JPEG (shown as a 64 px circle), metadata stripped |
+| A course ends, or runs longer | `status` and `until` in `courses.json`: under the lectures of an `Ongoing` course, *More lectures to come — Ongoing until <until> — you can still register ↗* (its `register` form) |
+| About us — its text, links (the form, YouTube, LinkedIn) | `templates/about.html`. Its course list gets a green dot per course that `courses.json` has as `Ongoing`; the words around it ("running now") are yours to update when a course starts or ends |
+| A person — name, degree, LinkedIn, email, IM profile | `templates/people/<name>.html`, one file each: About us shows it at `{{PERSON:<name>}}`, a course page at its end when `courses.json` has `"lecturer": "<name>"` |
+| A person's photo | `assets/about-us/<name>.jpg` — a square head-and-shoulders crop, 256×256 JPEG (shown as a 64 px circle, smaller as a lecturer), metadata stripped |
 | Footer (same on every page) | `FOOTER` in `build.py` |
 | Where `/` goes | `HOME` in `build.py` |
 | Look | `assets/style.css` — monochrome, square corners, hard shadows, like the lecture decks |
@@ -91,7 +93,7 @@ Both build into a temporary folder and delete it afterwards, so the project gets
 | `courses.json` | Everything the site shows |
 | `slides/<course>/` | The lecture PDFs; for engineering also the HTML slides (`<pdf name>.html`) and their `img/` |
 | `import_slides.py` | Brings a lecture's HTML slides in, without the speaker notes |
-| `templates/` | `courses.html` (all courses), `course.html` (one course) and `about.html` (About us) |
+| `templates/` | `courses.html` (all courses), `course.html` (one course) and `about.html` (About us); `people/` (one file per person) and `icons.html` (the icons), which they share |
 | `assets/` | `style.css` and the logos — `logo` (the mark) and `logo-text` (the wordmark) on a transparent ground, as SVG and PNG (4×) — copied to the site root; the favicon is made from `logo.svg`. `about-us/`: the photos and the IM and KAU marks (black ink on transparency) that About us shows, copied to `/about-us/` |
 | `build.py` | Fills the templates → the site. Python 3, standard library only |
 | `.github/workflows/deploy.yml` | On every push to `main`: `build.py --out _site`, then publishes `_site/` |

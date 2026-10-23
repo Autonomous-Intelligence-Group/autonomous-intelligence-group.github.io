@@ -2,9 +2,11 @@
   {
     "slug": "engineering",
     "status": "Ongoing",
+    "until": "December 2026",
     "title": "Autonomous Robotic Systems Engineering",
     "eyebrow": "Master's course",
     "tagline": "ROS 2 · Gazebo · State Estimation · Computer Vision · Navigation",
+    "lecturer": "oleh",
     "register": "https://docs.google.com/forms/d/e/1FAIpQLScCTDKY3T2xE_e-Do9QXVDI1CvSG9J3W2S0fOVt3imIYhin_Q/viewform",
     "playlist": "https://www.youtube.com/playlist?list=PLBeDJyZEjxEo",
     "lectures": [
@@ -61,9 +63,11 @@
   {
     "slug": "intro",
     "status": "Ongoing",
+    "until": "December 2026",
     "title": "Introduction to Autonomous Systems",
     "eyebrow": "Master's course",
     "tagline": "Dynamical Systems · State Estimation · Optimal Control · Reinforcement Learning · World Models",
+    "lecturer": "maksym",
     "register": "https://docs.google.com/forms/d/e/1FAIpQLScCTDKY3T2xE_e-Do9QXVDI1CvSG9J3W2S0fOVt3imIYhin_Q/viewform",
     "playlist": "https://www.youtube.com/playlist?list=PLCwTF9SaVAuc",
     "lectures": [
