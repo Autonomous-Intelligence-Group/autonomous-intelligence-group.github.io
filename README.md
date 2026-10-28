@@ -25,13 +25,14 @@ The same for both courses:
 1. **Slides.** Put the PDF in `slides/<course>/` — `slides/engineering/lecture-04-….pdf`,
    `slides/intro/ias-lec07-….pdf`. The file name becomes part of a public URL.
    Engineering also gets its HTML slides — the Marp export made with the PDF, which plays the
-   GIFs a PDF cannot:
+   GIFs and runs the interactive slides a PDF cannot:
    ```bash
    python3 import_slides.py <path/to/lecture-04-….html> engineering
    ```
-   It copies the slides beside their PDF without the speaker notes, and the pictures they show
-   into `slides/engineering/img/`. The page then gets **Slides ↗**, and a red *(GIFs don't play)*
-   under the PDF when the slides have GIFs. Run it again whenever the slides change.
+   It copies the slides beside their PDF without the speaker notes, and the files they load —
+   pictures, and the scripts and stylesheets of interactive slides — into
+   `slides/engineering/img/`. The page then gets **Slides ↗**, and a red *(not interactive)*
+   under the PDF when the slides have GIFs or interactive slides. Run it again whenever the slides change.
 2. **Info.** Add it to that course's `"lectures"` in [`courses.json`](courses.json), copied from
    the PDF's cover. `pdf` is the file name in `slides/<course>/`; `sub` and `topics` are optional.
    ```json

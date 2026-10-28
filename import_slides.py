@@ -3,16 +3,17 @@
 
     python3 import_slides.py <path/to/lecture-NN-….html> <course slug>
 
-The slides are Marp's HTML export: one file, with its pictures in img/ beside it. The copy
-leaves out the speaker notes — the presenter view's, never meant for readers, and this repo
-is public — and the pictures it shows go to slides/<course>/img/, each stored once. Run it
-again whenever the slides change; build.py then links them next to the PDF.
+The slides are Marp's HTML export: one file, with its pictures in img/ beside it — and, for an
+interactive slide, its script, data and stylesheet. The copy leaves out the speaker notes — the
+presenter view's, never meant for readers, and this repo is public — and the files it loads go
+to slides/<course>/img/, each stored once. Run it again whenever the slides change; build.py
+then links them next to the PDF.
 """
 import shutil
 import sys
 from pathlib import Path
 
-from build import HERE, pictures
+from build import HERE, loaded
 
 NOTE = '<div class="bespoke-marp-note"'
 
@@ -43,10 +44,10 @@ def main():
     if not (dest / deck.with_suffix('.pdf').name).exists():
         sys.exit(f'no slides/{course}/{deck.with_suffix(".pdf").name}: the slides show only next to their PDF')
 
-    shown = pictures(deck)
+    shown = loaded(deck)
     lost = [name for name in shown if not (deck.parent / name).exists()]
     if lost:
-        sys.exit('the slides show pictures that are not there:\n  ' + '\n  '.join(lost))
+        sys.exit('the slides load files that are not there:\n  ' + '\n  '.join(lost))
     for name in shown:
         (dest / name).parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(deck.parent / name, dest / name)
@@ -57,7 +58,9 @@ def main():
               'a `title:` in its front matter, export it again and bring it in again')
 
     gifs = sum(name.lower().endswith('.gif') for name in shown)
-    print(f'slides/{course}/{deck.name}: {len(shown)} pictures, {gifs} of them GIFs; speaker notes left out')
+    code = sum(name.lower().endswith(('.js', '.css')) for name in shown)
+    print(f'slides/{course}/{deck.name}: {len(shown) - code} pictures, {gifs} of them GIFs, '
+          f'{code} scripts and stylesheets; speaker notes left out')
 
 
 if __name__ == '__main__':

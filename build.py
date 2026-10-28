@@ -6,8 +6,9 @@
     python3 build.py --out _site   # build into _site/ and keep it — what GitHub Actions publishes
 
 Everything on the site comes from courses.json; each lecture's PDF is slides/<slug>/<pdf>.
-HTML slides beside it, slides/<slug>/<pdf name>.html (import_slides.py puts them there, their
-pictures in img/), get a Slides link — and a note under the PDF when they have GIFs.
+HTML slides beside it, slides/<slug>/<pdf name>.html (import_slides.py puts them there, the
+files they load in img/), get a Slides link — and a note under the PDF when they have GIFs or
+interactive slides.
 On every push to main, GitHub Actions builds into _site/ and publishes it
 (.github/workflows/deploy.yml). A local build goes to a temporary folder, so the project keeps
 each PDF and logo once.
@@ -82,8 +83,9 @@ ROW = '''      <li class="lecture">
       </li>'''
 SLIDES = '\n          <a class="link" href="slides/{html}" target="_blank" rel="noopener">Slides <span>↗</span></a>'
 PDF = '<a class="link" href="slides/{pdf}" target="_blank" rel="noopener">PDF <span>{size}</span>{stills}</a>'
-# A PDF shows each GIF as one still frame: said under the PDF of slides that have GIFs.
-STILLS = '<small class="stills">(GIFs don\'t play)</small>'
+# A PDF shows each GIF and each interactive slide as one still frame: said under the PDF of
+# slides that have either.
+STILLS = '<small class="stills">(not interactive)</small>'
 VIDEO ='\n          <a class="link" href="{url}" target="_blank" rel="noopener">Video <span>↗</span></a>'
 # Under the lectures of an ongoing course: the list is not the whole course, and one can still join.
 MORE = '''
@@ -116,15 +118,16 @@ GROUP = '''  <section>
 DOT = '<span class="dot live"></span>'
 
 
-# HTML slides (Marp's export, brought in by import_slides.py) load their pictures from img/.
-PICTURE = re.compile(r'(?<![\w./-])img/[\w./-]+?\.(?:png|jpe?g|gif|svg|webp)', re.I)
+# HTML slides (Marp's export, brought in by import_slides.py) load their pictures from img/ —
+# and an interactive slide its script, data and stylesheet (Lecture 6's sliders).
+LOADED = re.compile(r'(?<![\w./-])img/[\w./-]+?\.(?:png|jpe?g|gif|svg|webp|js|css)\b', re.I)
 
 
-def pictures(deck):
-    return sorted(set(PICTURE.findall(deck.read_text())))
+def loaded(deck):
+    return sorted(set(LOADED.findall(deck.read_text())))
 
 
-def row(lec, pdf, videos, deck=None, gifs=False):
+def row(lec, pdf, videos, deck=None, stills=False):
     url = videos.get(str(lec['num']))
     size = f'{pdf.stat().st_size / 1e6:.1f} MB'
     return ROW.format(
@@ -133,7 +136,7 @@ def row(lec, pdf, videos, deck=None, gifs=False):
         sub=f'\n          <p class="sub">{esc(lec["sub"])}</p>' if lec.get('sub') else '',
         topics=f'\n          <p class="topics">{esc(lec["topics"])}</p>' if lec.get('topics') else '',
         slides=SLIDES.format(html=deck.name) if deck else '',
-        pdf=PDF.format(pdf=pdf.name, size=size, stills=STILLS if gifs else ''),
+        pdf=PDF.format(pdf=pdf.name, size=size, stills=STILLS if stills else ''),
         video=VIDEO.format(url=esc(url)) if url else '',
     )
 
@@ -187,7 +190,7 @@ def build(out):
             if not deck.exists():
                 rows.append(row(lec, pdf, c.get('videos', {})))
                 continue
-            shown = pictures(deck)
+            shown = loaded(deck)
             for name in shown:
                 if not (deck.parent / name).exists():
                     lost.append(str((deck.parent / name).relative_to(HERE)))
@@ -196,8 +199,8 @@ def build(out):
                 shutil.copy2(deck.parent / name, page / 'slides' / name)
             shutil.copy2(deck, page / 'slides' / deck.name)
             decks += 1
-            gifs = any(name.lower().endswith('.gif') for name in shown)
-            rows.append(row(lec, pdf, c.get('videos', {}), deck, gifs))
+            stills = any(name.lower().endswith(('.gif', '.js')) for name in shown)
+            rows.append(row(lec, pdf, c.get('videos', {}), deck, stills))
 
         # Register leads when a course has a form; otherwise the recordings do.
         actions = [BUTTON.format(cls='primary', url=esc(c['register']), label='Register')] if c.get('register') else []
@@ -231,7 +234,7 @@ def build(out):
         # Fail rather than publish a course with a lecture silently gone.
         sys.exit('listed in courses.json but no PDF:\n  ' + '\n  '.join(missing))
     if lost:
-        sys.exit('HTML slides show pictures that are not there:\n  ' + '\n  '.join(lost))
+        sys.exit('HTML slides load files from img/ that are not there:\n  ' + '\n  '.join(lost))
     print(f'{sum(map(len, groups.values()))} courses, / -> {HOME}')
 
 

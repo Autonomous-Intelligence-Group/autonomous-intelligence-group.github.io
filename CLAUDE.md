@@ -61,15 +61,15 @@ Adding a lecture: the `deploy` skill (`.claude/skills/deploy/`) — fill, build,
 
 - The look of the lecture decks: monochrome, Rajdhani / DM Sans / Space Mono, square corners,
   hard offset shadows, dark cover-style header. **Two colours only:** the green dot of
-  "Ongoing courses" and the red *(GIFs don't play)*. Light and dark mode both.
+  "Ongoing courses" and the red *(not interactive)*. Light and dark mode both.
 - `/courses/`: large AIG wordmark + **About us →** button; no page title; courses grouped under
   "<status> courses"; each card: eyebrow, title, tagline, **Course content →** button,
   **Register ↗** as a text link. No "latest lecture" line.
 - Eyebrow is "Master's course" for both — no university name in it.
 - Course page: **← All courses**, Register (button) + Recordings, then lectures — each with a
   row of separate buttons of one size (not stacked, not merged): **Slides** (the HTML slides,
-  engineering only), **PDF** (size measured by the build; a small red *(GIFs don't play)* under
-  it when the slides have GIFs), **Video**. Intro has the same row without Slides. Under the
+  engineering only), **PDF** (size measured by the build; a small red *(not interactive)* under
+  it when the slides have GIFs or interactive slides — short, a warning), **Video**. Intro has the same row without Slides. Under the
   lectures of an `Ongoing` course, an entry without a number: **More lectures to come**,
   "● Ongoing until <`until`> — you can still *register ↗*" (the green dot in the line, before
   "Ongoing" — in the number column or beside the title it looked off; the form as a link in

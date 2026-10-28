@@ -106,11 +106,11 @@ The first `<title>` is the playlist; then one id + title per video. Find the tit
 
 ```bash
 python3 build.py --out /tmp/aig-site
-grep -o "<pdf name without .pdf>[^\"]*\|<video id>[^\"]*\|GIFs don't play" /tmp/aig-site/courses/<slug>/index.html | sort -u
+grep -o "<pdf name without .pdf>[^\"]*\|<video id>[^\"]*\|not interactive" /tmp/aig-site/courses/<slug>/index.html | sort -u
 ```
 
 The lecture count for the course must have gone up, and both the PDF and the video link must be
-on the page — for engineering also the `.html` slides, with *GIFs don't play* if they have GIFs. A build failure (`listed in courses.json but no PDF`) means a wrong `"pdf"` name —
+on the page — for engineering also the `.html` slides, with *not interactive* if they have GIFs or interactive slides. A build failure (`listed in courses.json but no PDF`) means a wrong `"pdf"` name —
 fix it and build again: pushed as it is, it would fail the deploy.
 
 Only content changed, so no visual check is needed. If templates, `assets/` or `build.py`
@@ -128,7 +128,7 @@ git pull --rebase && git push
 gh run list --workflow deploy.yml --limit 1    # this push's Deploy run: wait for ✓, about a minute
 ```
 
-- Commit only this lecture: the new PDF, its HTML slides and their pictures, and `courses.json`. Other uncommitted changes — name them and leave them out.
+- Commit only this lecture: the new PDF, its HTML slides and the files they load (`img/`), and `courses.json`. Other uncommitted changes — name them and leave them out.
 - Rebase conflict (someone pushed meanwhile): keep both sides in `courses.json`, check that
   `python3 build.py` passes, then `git add courses.json` and `git rebase --continue`.
 - Push refused for permission: the user needs collaborator access — the owner adds them under
@@ -138,5 +138,5 @@ gh run list --workflow deploy.yml --limit 1    # this push's Deploy run: wait fo
 - Never force-push.
 
 Reply with: the entry (title, sub, topics), the video (id, position) or that there is none yet,
-the HTML slides (how many GIFs) or that there are none, the commit, and the page — live about a minute after the push:
+the HTML slides (how many GIFs and scripts) or that there are none, the commit, and the page — live about a minute after the push:
 `https://autonomous-intelligence-group.github.io/courses/<slug>/`.
