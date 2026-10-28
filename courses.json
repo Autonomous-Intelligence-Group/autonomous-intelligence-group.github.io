@@ -134,6 +134,13 @@
         "sub": "Module III",
         "pdf": "ias-lec08-state-estimation-4-slides.pdf",
         "topics": "EKF / UKF · Monte Carlo · Importance sampling · Particle filter · Belief as sufficient statistic"
+      },
+      {
+        "num": 9,
+        "title": "Observation Models (I): Signals and Proprioceptive Sensors",
+        "sub": "Module III",
+        "pdf": "ias-lec09-observation-models-slides.pdf",
+        "topics": "Data processing inequality · Sufficient statistics · Encoders & aliasing · IMU & Allan variance"
       }
     ],
     "videos": {
@@ -144,7 +151,8 @@
       "5": "https://www.youtube.com/watch?v=5vXt_Zsgw28&list=PLCwTF9SaVAuc&index=5",
       "6": "https://www.youtube.com/watch?v=zZq_obGHvnM&list=PLCwTF9SaVAuc&index=6",
       "7": "https://www.youtube.com/watch?v=STXMjIUI7Vg&list=PLCwTF9SaVAuc&index=7",
-      "8": "https://www.youtube.com/watch?v=5mzDwptxBvo&list=PLCwTF9SaVAuc&index=8"
+      "8": "https://www.youtube.com/watch?v=5mzDwptxBvo&list=PLCwTF9SaVAuc&index=8",
+      "9": "https://www.youtube.com/watch?v=cr-9mlYXisI&list=PLCwTF9SaVAuc&index=9"
     }
   }
 ]
