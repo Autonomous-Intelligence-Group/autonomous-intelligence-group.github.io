@@ -1,0 +1,81 @@
+/* The deck's look for the MSE widget (mse.js), as bells-slide.css gives it to the bells widget: the deck 6 palette of
+   src/viz/lecture-05/plots/style.py — prediction blue, lidar red, the mix green — and the theme's DM Sans. Linked from
+   the slide that mounts the widget; every rule stays under `section .mse`, so nothing leaks into the theme. The widget
+   uses no <p>, <strong> or <em>: the HTML build scopes the theme's rules for those under an id, which no class here
+   would outrank. */
+
+section .mse {
+  --pred: #1f77b4;
+  --meas: #d62728;
+  --est: #2ca02c;
+  --ink: #222222;
+  --muted: #555555;
+  --rule: #e4e4e4;
+  --bg: #ffffff;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 330px;
+  gap: 0 28px;
+  align-items: start;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  line-height: 1.3;
+  color: var(--ink);
+}
+section .mse-figure { min-width: 0; }
+section .mse svg { display: block; overflow: visible; }
+section .mse-svg svg, section .mse-strip svg { width: 100%; height: auto; }
+section .mse svg text { font-family: 'DM Sans', system-ui, sans-serif; }
+/* STIX, as in bells-slide.css: KaTeX_Math has no superscript minus, and P⁻ would come out as P·. */
+section .mse .m { font-family: 'STIX Two Math', 'STIX Two Text', 'Cambria Math', 'Times New Roman', serif; }
+section .mse .m i { font-style: italic; }
+section .mse .pred { color: var(--pred); }
+section .mse .meas { color: var(--meas); }
+section .mse .est { color: var(--est); }
+section .mse .mse-num { font-weight: 700; }
+
+/* The key above the plot: the two dashed parts and their sum, in one row. */
+section .mse-key { display: flex; flex-wrap: wrap; gap: 2px 26px; padding-left: 58px; font-size: 15px; }
+section .mse-key > span { display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; }
+section .mse-key .m { font-size: 17px; }
+
+/* The plot carries its tooltip: a weight to try, as a row of the table (w, the two parts, their sum). */
+section .mse-plot { position: relative; }
+section .mse-tip {
+  position: absolute;
+  pointer-events: none;
+  white-space: nowrap;
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+  background: var(--bg);
+  border: 1px solid #c2c2c2;
+  border-radius: 4px;
+  padding: 2px 8px;
+}
+section .mse-tip .m { font-size: 17px; }
+
+/* The controls: one slider per sensor with its variance under it, the numbers, the reset button. */
+section .mse-controls { display: flex; flex-direction: column; gap: 14px; padding-top: 4px; font-size: 16px; }
+section .mse-group { border: 0; margin: 0; padding: 0; min-width: 0; }
+section .mse-group legend { padding: 0; font-weight: 600; }
+section .mse-group.pred legend, section .mse-group.pred .mse-var { color: var(--pred); }
+section .mse-group.meas legend, section .mse-group.meas .mse-var { color: var(--meas); }
+section .mse-group.pred input { accent-color: var(--pred); }
+section .mse-group.meas input { accent-color: var(--meas); }
+section .mse-slider { display: grid; grid-template-columns: 30px 1fr 68px; align-items: center; gap: 8px; }
+section .mse-sym { font-size: 19px; }
+section .mse-slider input[type="range"] { width: 100%; margin: 2px 0; }
+section .mse-slider output { font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+section .mse-var { padding-left: 38px; font-size: 15px; font-variant-numeric: tabular-nums; }
+section .mse-var .m, section .mse-readout .m { font-size: 18px; }
+section .mse-readout { font-variant-numeric: tabular-nums; }
+section .mse-readout .mse-eq { padding-left: 14px; margin-bottom: 6px; }
+section .mse-readout .mse-surer { color: var(--est); font-weight: 600; }
+section .mse-buttons { display: flex; justify-content: flex-end; }
+section .mse .mse-chip {
+  font: 14px 'DM Sans', system-ui, sans-serif;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid #c2c2c2;
+  border-radius: 999px;
+  padding: 2px 12px;
+  cursor: pointer;
+}

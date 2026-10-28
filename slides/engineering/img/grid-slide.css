@@ -1,0 +1,18 @@
+/* grid.js on a deck slide — the look of bells-slide.css: the deck's palette, DM Sans, text ≥ 12 px.
+   Every rule under `section`, like the theme (a top-level rule would drop the theme). Copied to slides/img/. */
+section .grid-widget {
+  --pred: #1f77b4; --meas: #d62728; --est: #2ca02c; --ink: #222222; --muted: #555555; --rule: #e4e4e4; --bg: #ffffff;
+  font-family: 'DM Sans', system-ui, sans-serif; color: var(--ink);
+}
+section .grid-panel svg { display: block; width: 100%; height: auto; overflow: visible; }
+section .grid-widget svg text { font-family: 'DM Sans', system-ui, sans-serif; }
+section .grid-widget svg .sym { font-family: 'STIX Two Math', 'STIX Two Text', 'Cambria Math', 'Times New Roman', serif; font-style: italic; }
+section .grid-controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 12px; margin-top: 2px; font-size: 14px; }
+section .grid-buttons { display: flex; flex-wrap: wrap; gap: 6px; }
+section .grid-widget .chip { font: 13px 'DM Sans', system-ui, sans-serif; color: var(--ink); background: transparent; border: 1px solid #c2c2c2; border-radius: 999px; padding: 2px 12px; cursor: pointer; }
+section .grid-widget .chip.grid-predict { color: var(--pred); border-color: var(--pred); }
+section .grid-widget .chip.grid-update { color: var(--est); border-color: var(--est); }
+section .grid-widget .chip:disabled { opacity: .35; cursor: default; pointer-events: none; }
+section .grid-counter { color: var(--muted); font-variant-numeric: tabular-nums; }
+section .grid-widget .grid-readout { margin: 4px 0 0; font-size: 13px; line-height: 1.35; color: var(--muted) !important; font-variant-numeric: tabular-nums; }
+section .grid-widget .grid-readout .val { color: var(--ink); }

@@ -1,0 +1,124 @@
+/* The deck's look for the covariance-ellipse widget (ellipse.js): the estimate's green and the ink of deck 6
+   (src/viz/lecture-05/plots/style.py), the theme's DM Sans, text at 13 px and up. Linked from the slide that mounts
+   the widget; every rule stays under `section .ell`, so nothing leaks into the theme. The widget has no <p>, <strong>
+   or <em>, the elements the theme colours, so no rule needs !important. */
+
+section .ell {
+  --est: #2ca02c;
+  --ink: #222222;
+  --muted: #555555;
+  --rule: #e4e4e4;
+  --bg: #ffffff;
+  --track: #dddddd;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 44px;
+  align-items: center;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  color: var(--ink);
+  line-height: 1.3;
+}
+section .ell-plot svg { display: block; }
+section .ell svg text { font-family: 'DM Sans', system-ui, sans-serif; }
+/* STIX, as in bells-slide.css: the symbols read like the KaTeX on the slides around. */
+section .ell .sym { font-family: 'STIX Two Math', 'STIX Two Text', 'Cambria Math', 'Times New Roman', serif; font-style: italic; }
+section .ell sub { font-size: 0.68em; line-height: 0; }
+/* σ with 2 over x, as TeX stacks σ_x^2: the column's baseline is the 2's, lifted to a superscript's height. */
+section .ell .ell-ss {
+  display: inline-flex;
+  flex-direction: column;
+  vertical-align: 0.42em;
+  font-size: 0.62em;
+  line-height: 1.12;
+  margin-left: 1px;
+}
+
+/* Sliders on top, P under them, the counts and the reset button at the bottom. */
+section .ell-panel { display: flex; flex-direction: column; gap: 30px; min-width: 0; }
+
+section .ell-sliders { display: grid; row-gap: 12px; font-size: 18px; }
+section .ell-slider { display: grid; grid-template-columns: 40px 1fr 92px; align-items: center; gap: 14px; }
+section .ell-slider .sym { font-size: 24px; }
+section .ell-slider output { font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+
+/* The slider, drawn here rather than by the browser: a green fill up to the thumb (--f, set by ellipse.js) and a
+   light track after it. The thumb is 18 px, so the fill ends at its centre: 9 px + (width − 18 px)·f. */
+section .ell-slider input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 22px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+}
+section .ell-slider input[type="range"]::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(to right, var(--est) calc(9px + (100% - 18px) * var(--f, 0.5)), var(--track) 0);
+}
+section .ell-slider input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  margin-top: -6px;
+  border-radius: 50%;
+  background: var(--est);
+  border: 2px solid var(--bg);
+  box-shadow: 0 0 0 1px var(--est);
+}
+section .ell-slider input[type="range"]::-moz-range-track { height: 6px; border-radius: 3px; background: var(--track); }
+section .ell-slider input[type="range"]::-moz-range-progress { height: 6px; border-radius: 3px; background: var(--est); }
+section .ell-slider input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--est);
+  border: 2px solid var(--bg);
+  box-shadow: 0 0 0 1px var(--est);
+}
+section .ell-slider input[type="range"]:focus { outline: none; }
+section .ell-slider input[type="range"]:focus-visible { outline: 2px solid var(--est); outline-offset: 3px; }
+
+section .ell-matrix { display: flex; align-items: center; gap: 10px; font-size: 21px; white-space: nowrap; }
+section .ell-matrix > .sym { font-size: 24px; }
+/* A 2 × 2 matrix in brackets drawn by borders: no KaTeX inside a widget. */
+section .ell-m {
+  display: inline-grid;
+  grid-template-columns: auto auto;
+  column-gap: 20px;
+  row-gap: 4px;
+  padding: 3px 11px;
+  position: relative;
+}
+section .ell-m::before,
+section .ell-m::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  border: 1.6px solid var(--ink);
+}
+section .ell-m::before { left: 0; border-right: 0; }
+section .ell-m::after { right: 0; border-left: 0; }
+section .ell-m > span { text-align: center; }
+section .ell-num { font-family: 'DM Sans', system-ui, sans-serif; font-style: normal; font-variant-numeric: tabular-nums; }
+section .ell-num > span { text-align: right; min-width: 2.4em; }
+
+section .ell-bottom { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+section .ell-counts { display: grid; row-gap: 8px; font-size: 18px; }
+section .ell-count { display: flex; align-items: center; gap: 10px; white-space: nowrap; }
+section .ell-swatch { flex: none; }
+section .ell-n, section .ell-pct { font-weight: 600; font-variant-numeric: tabular-nums; }
+
+section .ell .chip {
+  font: 13px 'DM Sans', system-ui, sans-serif;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid #c2c2c2;
+  border-radius: 999px;
+  padding: 2px 12px;
+  cursor: pointer;
+}

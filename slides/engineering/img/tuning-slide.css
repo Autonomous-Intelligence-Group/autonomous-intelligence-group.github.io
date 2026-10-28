@@ -1,0 +1,49 @@
+/* The deck's look for the tuning widget (tuning.js): the deck 6 palette of src/viz/lecture-05/plots/style.py — the
+   truth ink, the ray red, the estimate green — and the theme's DM Sans. Linked from the slide that mounts the widget;
+   every rule stays under `section .tn`, so nothing leaks into the theme. The widget prints its numbers in <div> and
+   <span>, which the theme does not style, so no rule here needs the !important of bells-slide.css. */
+
+section .tn {
+  --meas: #d62728;
+  --est: #2ca02c;
+  --ink: #222222;
+  --muted: #555555;
+  --rule: #e4e4e4;
+  --faint: #f1f1f1;
+  --bg: #ffffff;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.3;
+  color: var(--ink);
+}
+section .tn-panel svg { display: block; width: 100%; height: auto; overflow: visible; }
+section .tn svg text { font-family: 'DM Sans', system-ui, sans-serif; }
+
+/* The numbers of the run shown: the knobs in ink, the estimate's numbers in its green. */
+section .tn-readout { margin: 2px 0 6px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+section .tn-readout .tn-v { color: var(--est); font-weight: 600; }
+
+/* One row: the noise ratio σ_u²/σ_z², the slider, its value, the reset button; the ratios under the slider's stops. */
+section .tn-controls {
+  display: grid;
+  grid-template-columns: 64px 1fr 76px auto;
+  column-gap: 10px;
+  align-items: center;
+}
+section .tn-sym { font-family: 'STIX Two Math', 'STIX Two Text', 'Cambria Math', 'Times New Roman', serif; font-size: 18px; white-space: nowrap; }
+section .tn-controls input[type="range"] { width: 100%; margin: 2px 0; accent-color: var(--est); }
+section .tn-controls output { font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+section .tn-buttons { display: flex; justify-content: flex-end; }
+/* The track's stops sit half a thumb (8 px) in from its ends. */
+section .tn-ticks { grid-column: 2; position: relative; height: 17px; margin: 0 8px; font-size: 13px; color: var(--muted); }
+section .tn-ticks span { position: absolute; top: 0; transform: translateX(-50%); white-space: nowrap; font-variant-numeric: tabular-nums; }
+section .tn-ticks span.on { color: var(--ink); font-weight: 600; }
+section .tn .chip {
+  font: 13px 'DM Sans', system-ui, sans-serif;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid #c2c2c2;
+  border-radius: 999px;
+  padding: 2px 12px;
+  cursor: pointer;
+}

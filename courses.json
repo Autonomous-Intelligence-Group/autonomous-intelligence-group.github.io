@@ -49,6 +49,13 @@
         "sub": "What a sensor measures, how noisy it is, and where the lidar is blind",
         "pdf": "lecture-05-sensors-and-noise.pdf",
         "topics": "What Sensors Measure · The Lidar · Noise · Where the Lidar Is Blind"
+      },
+      {
+        "num": 6,
+        "title": "State Estimation and Fusion",
+        "sub": "One estimate from noisy sensors: the Kalman filter by hand and in ROS 2",
+        "pdf": "lecture-06-state-estimation.pdf",
+        "topics": "Course feedback · Lab 2 · Complementary filter · Bayes filter · Kalman filter"
       }
     ],
     "videos": {
@@ -57,7 +64,8 @@
       "2": "https://www.youtube.com/watch?v=D-PPyDowY_8&list=PLBeDJyZEjxEo&index=3",
       "3": "https://www.youtube.com/watch?v=1toelWxVnjs&list=PLBeDJyZEjxEo&index=4",
       "4": "https://www.youtube.com/watch?v=J9UCOfLO-NA&list=PLBeDJyZEjxEo&index=5",
-      "5": "https://www.youtube.com/watch?v=foSLMExJZCY&list=PLBeDJyZEjxEo&index=6"
+      "5": "https://www.youtube.com/watch?v=foSLMExJZCY&list=PLBeDJyZEjxEo&index=6",
+      "6": "https://www.youtube.com/watch?v=ykK8Mai8lPY&list=PLBeDJyZEjxEo&index=7"
     }
   },
   {

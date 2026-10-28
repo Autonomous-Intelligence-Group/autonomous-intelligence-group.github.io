@@ -1,0 +1,58 @@
+/* The deck's look for the bells widget (bells.js, copied from the teach workspace, assets/bells.js):
+   the deck 6 palette of src/viz/lecture-05/plots/style.py — prediction blue, ray red, estimate green —
+   and the theme's DM Sans. Linked from the slide that mounts the widget; every rule stays under
+   `section .bells`, so nothing leaks into the theme. */
+
+section .bells {
+  --pred: #1f77b4;
+  --meas: #d62728;
+  --est: #2ca02c;
+  --ink: #222222;
+  --muted: #555555;
+  --rule: #e4e4e4;
+  --bg: #ffffff;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  color: var(--ink);
+}
+section .bells-panel svg { display: block; width: 100%; height: auto; overflow: visible; }
+section .bells svg text { font-family: 'DM Sans', system-ui, sans-serif; }
+/* STIX, as in the lesson: KaTeX_Math has no superscript minus, and d⁻ came out as d·. */
+section .bells .sym { font-family: 'STIX Two Math', 'STIX Two Text', 'Cambria Math', 'Times New Roman', serif; font-style: italic; }
+/* The widget draws at 1 SVG unit = 1 slide px; lift its small text to the deck's 12 px floor. */
+section .bells svg text[font-size="11"] { font-size: 13px; }
+section .bells svg text[font-size="11.5"] { font-size: 12.5px; }
+section .bells svg text[font-size="12.5"] { font-size: 14px; }
+
+section .bells-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 32px;
+  margin-top: 2px;
+  font-size: 15px;
+  line-height: 1.3;
+}
+section .bells-group { border: 0; margin: 0; padding: 0; min-width: 0; }
+section .bells-group legend { padding: 0; font-weight: 600; }
+section .bells-group.pred legend { color: var(--pred); }
+section .bells-group.meas legend { color: var(--meas); }
+section .bells-group.pred input { accent-color: var(--pred); }
+section .bells-group.meas input { accent-color: var(--meas); }
+section .bells-slider { display: grid; grid-template-columns: 30px 1fr 64px; align-items: center; gap: 8px; }
+section .bells-slider .sym { font-size: 17px; }
+section .bells-slider input[type="range"] { width: 100%; margin: 2px 0; }
+section .bells-slider output { font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+
+/* The estimate's numbers on the left, the reset button on the right, in one row. The readout is a <p>, and
+   the HTML build scopes the theme's `section p` colour under an id (`div#:$p > svg > foreignobject > section p`),
+   which no class outranks — hence the one !important. */
+section .bells .bells-readout { grid-column: 1; margin: 4px 0 0; color: var(--est) !important; font-weight: 600; font-variant-numeric: tabular-nums; }
+section .bells-buttons { grid-column: 2; display: flex; justify-content: flex-end; margin-top: 4px; }
+section .bells .chip {
+  font: 13px 'DM Sans', system-ui, sans-serif;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid #c2c2c2;
+  border-radius: 999px;
+  padding: 2px 12px;
+  cursor: pointer;
+}
