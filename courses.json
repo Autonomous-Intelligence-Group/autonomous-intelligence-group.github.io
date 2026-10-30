@@ -141,6 +141,13 @@
         "sub": "Module III",
         "pdf": "ias-lec09-observation-models-slides.pdf",
         "topics": "Data processing inequality · Sufficient statistics · Encoders & aliasing · IMU & Allan variance"
+      },
+      {
+        "num": 10,
+        "title": "Observation Models (II): Complementary Filter and Time of Flight",
+        "sub": "Module III",
+        "pdf": "ias-lec10-observation-models-2-slides.pdf",
+        "topics": "Complementary filter · CF → KF cascade · Time of flight · SNR & detection · Matched filter · Resolution & pulse compression"
       }
     ],
     "videos": {
@@ -152,7 +159,8 @@
       "6": "https://www.youtube.com/watch?v=zZq_obGHvnM&list=PLCwTF9SaVAuc&index=6",
       "7": "https://www.youtube.com/watch?v=STXMjIUI7Vg&list=PLCwTF9SaVAuc&index=7",
       "8": "https://www.youtube.com/watch?v=5mzDwptxBvo&list=PLCwTF9SaVAuc&index=8",
-      "9": "https://www.youtube.com/watch?v=cr-9mlYXisI&list=PLCwTF9SaVAuc&index=9"
+      "9": "https://www.youtube.com/watch?v=cr-9mlYXisI&list=PLCwTF9SaVAuc&index=9",
+      "10": "https://www.youtube.com/watch?v=dZPNUrU0g48&list=PLCwTF9SaVAuc&index=10"
     }
   }
 ]
