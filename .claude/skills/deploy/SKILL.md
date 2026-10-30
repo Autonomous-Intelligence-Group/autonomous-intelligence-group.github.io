@@ -1,13 +1,13 @@
 ---
 name: deploy
-description: Add a new lecture to the course site and deploy it. The user gives a lecture PDF (a path, or a file they dropped into slides/<course>/); fill its entry in courses.json from the cover, find its video on the course playlist, check the build, then commit and push — the push deploys. Use when the user adds or provides lecture slides, or asks to deploy or publish a lecture.
+description: Add a new lecture to the course site and deploy it. The user gives a lecture PDF (a path, or a file they dropped into slides/<course>/); fill its entry in courses.json from the cover, find its video on the course playlist, check the build, show the user a preview of the page, and once they approve it commit and push — the push deploys. Use when the user adds or provides lecture slides, or asks to deploy or publish a lecture.
 argument-hint: "[path/to/lecture.pdf]"
 ---
 
 # Deploy a lecture
 
 The user — the owner or a collaborator with push access — provides the PDF. You fill
-`courses.json`, find the video, check the build, commit and push: on every push to `main`,
+`courses.json`, find the video, check the build, preview the page, commit and push: on every push to `main`,
 GitHub Actions builds the site and publishes it (`.github/workflows/deploy.yml`); the built
 site is never committed. Rules in `CLAUDE.md` apply (PDFs in `slides/` are originals; public
 URLs never change).
@@ -113,13 +113,59 @@ The lecture count for the course must have gone up, and both the PDF and the vid
 on the page — for engineering also the `.html` slides, with *not interactive* if they have GIFs or interactive slides. A build failure (`listed in courses.json but no PDF`) means a wrong `"pdf"` name —
 fix it and build again: pushed as it is, it would fail the deploy.
 
-Only content changed, so no visual check is needed. If templates, `assets/` or `build.py`
-changed, render light, dark and 390 px wide first (`CLAUDE.md`).
+## 5. Preview
 
-## 5. Commit and push
+The build checks the files, not how the entry reads or fits. Before committing, render the
+course page from that build — light, dark and 390 px wide — and look at it:
 
-The push is the deploy. Push only when the user asked to deploy or publish (`/deploy` counts);
-if they only asked to prepare a lecture, stop here and give them these commands instead.
+```bash
+CHROME="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"   # Linux: google-chrome
+PAGE=file:///tmp/aig-site/courses/<slug>/index.html
+OUT=/tmp/aig-shots && mkdir -p $OUT
+shot() { "$CHROME" --headless=old --hide-scrollbars --virtual-time-budget=5000 "$@" "$PAGE" 2>/dev/null; }
+shot --window-size=1280,4000 --screenshot=$OUT/light.png
+shot --window-size=1280,4000 --blink-settings=preferredColorScheme=0 --screenshot=$OUT/dark.png
+shot --window-size=390,8000 --screenshot=$OUT/phone.png
+for f in light dark phone; do magick $OUT/$f.png -define trim:edges=south -trim +repage $OUT/$f.png; done  # cut the empty tail
+magick $OUT/phone.png -gravity South -crop 390x1600+0+0 +repage $OUT/phone-end.png  # the last lectures
+```
+
+- `--headless=old`: the new mode lays a page out no narrower than 500 px, and the 390 px shot
+  cuts off its right edge (`CLAUDE.md`). `preferredColorScheme=0` is dark;
+  `--force-dark-mode` leaves the page light. `--virtual-time-budget` waits for the web fonts.
+  `trim:edges=south`: a plain `-trim` also cuts the header's top margin, and the logo with it.
+- `magick` is ImageMagick. Without it, look at the uncut shots; the whole phone page is shrunk
+  past reading — enough for the layout only.
+
+Read `light.png`, `dark.png` and `phone-end.png`, and check:
+
+- the new lecture comes last, with its number, title, sub and topics as on the cover — nothing
+  cut off, overlapping or wrapped oddly;
+- its buttons in one row, one size: **Slides** (engineering, when imported), **PDF** with its
+  size — the red *(not interactive)* under it when the slides have GIFs or interactive slides —
+  and **Video** when there is one;
+- an `Ongoing` course still ends with *More lectures to come*, then Lecturer and the footer
+  (no footer → the window was too short: make it taller);
+- dark: all readable; 390 px: nothing runs off the right edge.
+
+Something off → fix it, build and look again.
+
+Then show the user — the push publishes, so they see the page first:
+
+```bash
+python3 build.py --serve    # in the background; stop it once they answer
+```
+
+Give them `http://localhost:8000/courses/<slug>/` and the shots (`/tmp/aig-shots/light.png`,
+`dark.png`, `phone-end.png`), say what you checked, and wait for their OK. Commit and push only
+after it — `/deploy` or "publish" does not skip this. A change asked → make it, build, render
+and show again.
+
+## 6. Commit and push
+
+The push is the deploy. Push only when the user asked to deploy or publish (`/deploy` counts)
+and approved the preview; if they only asked to prepare a lecture, stop here and give them
+these commands instead.
 
 ```bash
 git add slides/<slug>/<new pdf> slides/<slug>/<new html> slides/<slug>/img courses.json
@@ -138,5 +184,6 @@ gh run list --workflow deploy.yml --limit 1    # this push's Deploy run: wait fo
 - Never force-push.
 
 Reply with: the entry (title, sub, topics), the video (id, position) or that there is none yet,
-the HTML slides (how many GIFs and scripts) or that there are none, the commit, and the page — live about a minute after the push:
+the HTML slides (how many GIFs and scripts) or that there are none, what the preview showed
+(and the shots in `/tmp/aig-shots/`), the commit, and the page — live about a minute after the push:
 `https://autonomous-intelligence-group.github.io/courses/<slug>/`.

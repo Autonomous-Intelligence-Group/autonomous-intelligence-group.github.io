@@ -32,8 +32,8 @@ copies of the old logos (PNG on a white ground) — the Lab 1 READMEs and the st
 embed `logo-text.png` from there. From Lab 2 on, the lab READMEs embed `logo-text.png` and
 `logo-text-white.png` from this site.
 
-Adding a lecture: the `deploy` skill (`.claude/skills/deploy/`) — fill, build, commit and push
-(the push deploys).
+Adding a lecture: the `deploy` skill (`.claude/skills/deploy/`) — fill, build, preview (the
+user looks and approves), commit and push (the push deploys).
 
 ## Rules
 
@@ -97,6 +97,8 @@ Adding a lecture: the `deploy` skill (`.claude/skills/deploy/`) — fill, build,
   ```
   Headless Chrome's new mode lays a page out no narrower than 500 px, whatever
   `--window-size` says — a 390 px shot then cuts off the right edge; `--headless=old` gives
-  390 (checked 2026-10-23, Chrome 131).
+  390 (checked 2026-10-23, Chrome 131). Dark mode: `--blink-settings=preferredColorScheme=0`
+  — `--force-dark-mode` leaves the page light (checked 2026-10-30). The commands: the `deploy`
+  skill, step 5.
 
 Commit messages in English.

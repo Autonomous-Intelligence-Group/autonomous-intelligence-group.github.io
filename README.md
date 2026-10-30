@@ -99,7 +99,7 @@ Both build into a temporary folder and delete it afterwards, so the project gets
 | `build.py` | Fills the templates → the site. Python 3, standard library only |
 | `.github/workflows/deploy.yml` | On every push to `main`: `build.py --out _site`, then publishes `_site/` |
 | `CLAUDE.md` | Conventions for an AI agent working in this repo |
-| `.claude/skills/deploy/` | Claude Code `/deploy <pdf>`: all of "Adding a lecture" — fills `courses.json`, finds the video, builds, commits and pushes |
+| `.claude/skills/deploy/` | Claude Code `/deploy <pdf>`: all of "Adding a lecture" — fills `courses.json`, finds the video, builds, shows you a preview of the page (light, dark, phone) and, once you approve it, commits and pushes |
 
 ## Hosting
 
