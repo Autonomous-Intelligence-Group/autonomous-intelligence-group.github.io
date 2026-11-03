@@ -49,7 +49,7 @@ Topics: Gaussian machinery · Closure theorems · Conjugacy · Kalman filter: pr
 ```
 
 **`engineering`** — the second line is the deck's subtitle, or just the course name
-(`AUTONOMOUS ROBOTIC SYSTEMS ENGINEERING`, as in Lectures 0–1), which means no `sub`:
+(`AUTONOMOUS ROBOTIC SYSTEMS ENGINEERING`, as in Lectures 0–1); either way no `sub`:
 
 ```
 LECTURE 3 — INSIDE THE DRIVE
@@ -70,9 +70,8 @@ Append to that course's `"lectures"`, keys in this order:
 ```
 
 - `title`: the cover is all caps — write it in title case like the entries before it.
-- `sub`: `intro` → `Module <roman>`. `engineering` → the subtitle in sentence case, names and
-  ROS terms capitalised as in earlier entries (`From a Twist to turning wheels and spinning
-  rotors`); omitted when the line is the course name.
+- `sub`: `intro` → `Module <roman>`. `engineering` → never: the owner does not want the deck's
+  subtitle on the site (2026-11-03); it stays on the cover.
 - `topics`: verbatim — the `Topics:` line is not uppercased (keep the deck's spelling, e.g.
   "Optimisation").
 - A cover that does not fit this shape, or casing you cannot be sure of: show the user what
@@ -139,7 +138,7 @@ magick $OUT/phone.png -gravity South -crop 390x1600+0+0 +repage $OUT/phone-end.p
 
 Read `light.png`, `dark.png` and `phone-end.png`, and check:
 
-- the new lecture comes last, with its number, title, sub and topics as on the cover — nothing
+- the new lecture comes last, with its number, title, sub (intro only) and topics as on the cover — nothing
   cut off, overlapping or wrapped oddly;
 - its buttons in one row, one size: **Slides** (engineering, when imported), **PDF** with its
   size — the red *(not interactive)* under it when the slides have GIFs or interactive slides —

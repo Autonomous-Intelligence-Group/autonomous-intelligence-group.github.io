@@ -44,8 +44,8 @@ The same for both courses:
      "topics": "Kalman filter · …"
    }
    ```
-   `sub` is the cover's second line: the module for `intro`, the subtitle for `engineering` —
-   left out when that line is only the course name.
+   `sub` is the cover's second line, the module, for `intro` only. `engineering` lectures have
+   no `sub`: the deck's subtitle stays on the cover, not on the site.
 3. **Video**, when it is up. Upload it to the course's playlist, at the end. On YouTube:
    **Share** → `https://youtu.be/<id>?si=…` — copy the `<id>`. Add to the course's `"videos"`:
    ```json
