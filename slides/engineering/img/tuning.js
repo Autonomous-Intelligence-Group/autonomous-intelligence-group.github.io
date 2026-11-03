@@ -23,6 +23,8 @@
  *              K: K at the last scan; rmse (mm), inside (a share), insideN of n: over the moving scans, printed as
  *              given; est [mm]: d̂ − d per scan; band [mm]: 2√P per scan
  *
+ * The slider is named σ_u² when every run keeps the measured R (r = 1), as on the deck, and σ_u²/σ_z² otherwise.
+ *
  * Options (all optional except data; DEFAULTS below):
  *   start        the e of the run shown first and restored by reset; default 0, the measured ratio
  *   xRange       [s]: default from the whole second before the first scan to the half second after the last
@@ -341,7 +343,10 @@
     readout.setAttribute('aria-live', 'polite');
 
     var box = el.appendChild(make('div', 'tn-controls'));
-    box.appendChild(make('span', 'tn-sym', '<i>σ</i><sub><i>u</i></sub><sup>2</sup>/<i>σ</i><sub><i>z</i></sub><sup>2</sup>'));
+    // The slider is named after what moves: σ_u² alone when every run keeps the measured R, the ratio otherwise.
+    var onlyQ = runs.every(function (r) { return r.r === 1; });
+    box.appendChild(make('span', 'tn-sym', '<i>σ</i><sub><i>u</i></sub><sup>2</sup>' +
+      (onlyQ ? '' : '/<i>σ</i><sub><i>z</i></sub><sup>2</sup>')));
     var input = make('input');
     input.type = 'range';
     input.min = 0; input.max = runs.length - 1; input.step = 1;

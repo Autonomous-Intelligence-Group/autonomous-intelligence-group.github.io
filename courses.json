@@ -52,10 +52,17 @@
       },
       {
         "num": 6,
-        "title": "State Estimation and Fusion",
-        "sub": "One estimate from noisy sensors: the Kalman filter by hand and in ROS 2",
+        "title": "State Estimation and Fusion (I)",
+        "sub": "One estimate from noisy sensors: from the complementary filter to Kalman by hand",
         "pdf": "lecture-06-state-estimation.pdf",
         "topics": "Course feedback · Lab 2 · Complementary filter · Bayes filter · Kalman filter"
+      },
+      {
+        "num": 7,
+        "title": "State Estimation and Fusion (II)",
+        "sub": "One estimate from noisy sensors: from Kalman in matrices to the extended Kalman filter (EKF)",
+        "pdf": "lecture-07-state-estimation-2.pdf",
+        "topics": "Kalman gain · Covariance · EKF · robot_localization"
       }
     ],
     "videos": {
@@ -65,7 +72,8 @@
       "3": "https://www.youtube.com/watch?v=1toelWxVnjs&list=PLBeDJyZEjxEo&index=4",
       "4": "https://www.youtube.com/watch?v=J9UCOfLO-NA&list=PLBeDJyZEjxEo&index=5",
       "5": "https://www.youtube.com/watch?v=foSLMExJZCY&list=PLBeDJyZEjxEo&index=6",
-      "6": "https://www.youtube.com/watch?v=ykK8Mai8lPY&list=PLBeDJyZEjxEo&index=7"
+      "6": "https://www.youtube.com/watch?v=ykK8Mai8lPY&list=PLBeDJyZEjxEo&index=7",
+      "7": "https://www.youtube.com/watch?v=XDL1-QdY8sc&list=PLBeDJyZEjxEo&index=8"
     }
   },
   {

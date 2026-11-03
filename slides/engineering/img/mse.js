@@ -1,9 +1,10 @@
 /*
  * mse.js: the best weight of a mix, as a parabola. The noise of the wheels' prediction (σ_d⁻) and of the lidar (σ_z)
- * give MSE(w) = (1 − w)²σ²_d⁻ + w²σ²_z, the mean squared error of the mix (1 − w)·d⁻ + w·z for every weight w of
- * the scan. Its bottom is w* = K = σ²_d⁻/(σ²_d⁻ + σ²_z), and the error there, (1 − K)·σ²_d⁻, lies below both.
- * A strip of three Gaussians under the plot shows the same on the distance axis: the prediction, the lidar and the
- * mix with the weight K, narrower than both. (The code keeps the libraries' names: Pm for σ²_d⁻, R for σ²_z.)
+ * give σ²_d̂(w) = (1 − w)²σ²_d⁻ + w²σ²_z, the doubt (the variance, which is the mean squared error) of the estimate
+ * (1 − w)·d⁻ + w·z for every weight w of the scan. Its bottom is w* = K = σ²_d⁻/(σ²_d⁻ + σ²_z), and the doubt there,
+ * (1 − K)·σ²_d⁻, lies below both. A strip of three Gaussians under the plot shows the same on the distance axis: the
+ * prediction, the lidar and the estimate with the weight K, its σ smaller than both. The deck never prints «MSE»: the
+ * curve is σ²_d̂, the deck's one name for that doubt. (The code keeps the libraries' names: Pm for σ²_d⁻, R for σ²_z.)
  * A reusable component with the look of bells.js: vanilla JavaScript, no libraries, works offline from file://.
  *
  *   <link rel="stylesheet" href="img/mse-slide.css">
@@ -63,9 +64,9 @@
       prior: 'the wheels\' prediction', meas: 'the lidar',
       priorPart: 'the prediction\'s part', measPart: 'the lidar\'s part', sum: 'their sum',
       priorAlone: 'wheels alone', measAlone: 'lidar alone', weight: 'the scan\'s weight',
-      priorBell: 'prediction', measBell: 'lidar', mixBell: 'mix',
-      best: 'the best weight', bottom: 'MSE at the bottom',
-      surer: 'the mix is surer than either sensor'
+      priorBell: 'prediction', measBell: 'lidar', mixBell: 'estimate',
+      best: 'the best weight', bottom: 'the bottom',
+      surer: 'the estimate is more accurate than either sensor'
     },
     onChange: null
   };
@@ -227,9 +228,9 @@
 
   function describePlot(st, o) {
     var u = o.unit + '²';
-    return 'MSE of the mix against the scan\'s weight w: the prediction\'s part (1 − w)²σ²_d⁻ with σ²_d⁻ = ' +
+    return 'The estimate\'s doubt σ²_d̂ against the scan\'s weight w: the prediction\'s part (1 − w)²σ²_d⁻ with σ²_d⁻ = ' +
       fmtVar(st.Pm, st) + ' ' + u + ', the lidar\'s part w²σ²_z with σ²_z = ' + fmtVar(st.R, st) + ' ' + u +
-      '; the bottom at w = K = ' + fmt(st.K, 2) + ', MSE = ' + fmtVar(st.bottom, st) + ' ' + u + ', below both';
+      '; the bottom at w = K = ' + fmt(st.K, 2) + ', σ²_d̂ = ' + fmtVar(st.bottom, st) + ' ' + u + ', below both';
   }
 
   /** The main plot: MSE(w), its two dashed parts, each sensor alone as a dotted level, the bottom at K. */
@@ -249,7 +250,7 @@
       if (k > 0) out.push(line(f.left, y, f.right, y, 'stroke: ' + COLOR.rule + '; stroke-width: 1'));
       if (Math.abs(y - by) > 15) out.push(text(f.left - 8, y + 4.5, 'end', 13, muted, k ? fmt(k * step, dig) : '0'));
     }
-    out.push(text(4, f.yt - 10, 'start', 13, muted, 'MSE, ' + esc(o.unit) + '²'));
+    out.push(text(4, f.yt - 10, 'start', 13, muted, sig2('d̂') + ', ' + esc(o.unit) + '²'));
 
     // x: the axis, its ticks and labels, the title under them.
     out.push(line(f.left, f.yb, f.right, f.yb, 'stroke: ' + COLOR.muted + '; stroke-width: 1'));
@@ -311,7 +312,7 @@
     var u = ' ' + o.unit;
     return 'Three Gaussians: ' + o.labels.priorBell + ' ' + fmt(st.priorMean, 1) + ' ± ' + fmt(st.priorSigma, 2) + u + ', ' +
       o.labels.measBell + ' ' + fmt(st.measMean, 1) + ' ± ' + fmt(st.measSigma, 2) + u + ', ' + o.labels.mixBell +
-      ' with the weight K ' + fmt(st.mixMean, 2) + ' ± ' + fmt(st.mixSigma, 2) + u + ', narrower than both';
+      ' with the weight K ' + fmt(st.mixMean, 2) + ' ± ' + fmt(st.mixSigma, 2) + u + ', its σ smaller than both';
   }
 
   /** The strip: the prediction, the lidar and the mix with the weight K as Gaussians on one distance axis. */
@@ -398,10 +399,10 @@
     return entry(swatch(COLOR.pred, 2, '7 5'), '<span class="m">(1 − <i>w</i>)²</span>' + P_() + ' — ' +
       esc(o.labels.priorPart)) +
       entry(swatch(COLOR.meas, 2, '7 5'), hsym('w', '²') + R_() + ' — ' + esc(o.labels.measPart)) +
-      entry(swatch(COLOR.est, 3), 'MSE — ' + esc(o.labels.sum));
+      entry(swatch(COLOR.est, 3), E_() + ' — ' + esc(o.labels.sum));
   }
 
-  /** The numbers: K and the bottom's MSE, each formula with the slider's values in it. */
+  /** The numbers: K and the bottom's doubt σ²_d̂, each formula with the slider's values in it. */
   function renderReadout(st, o) {
     // A printed sum is the sum of the printed terms, so 1.23 + 2.46 never shows as 3.70.
     var shown = function (v) { return parseFloat(fmtVar(v, st).replace(DECIMAL, '.')); };

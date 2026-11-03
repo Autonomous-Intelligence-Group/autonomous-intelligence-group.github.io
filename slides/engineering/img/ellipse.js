@@ -33,6 +33,7 @@
  *   range, tick           the plot shows −range … range on both axes, in `unit`; grid lines every `tick`
  *   size                  the plot's side, px: the SVG is drawn at 1 unit = 1 slide px
  *   unit, decimal         the unit of x and y; the decimal mark of every printed number
+ *   numbers               false: P with its letters only, and each count as a share alone (39 % of the points)
  *   xLabel, yLabel        the axis titles
  *   resetLabel            the text of the button that returns to the start
  *   blur                  true: a released slider or a pressed button gives the keyboard back to the deck,
@@ -76,6 +77,7 @@
     size: 380,
     unit: 'cm',
     decimal: '.',
+    numbers: true,
     xLabel: 'x error, cm',
     yLabel: 'y error, cm',
     resetLabel: '↺ reset',
@@ -348,20 +350,21 @@
       if (o.blur) inp.addEventListener('change', function () { inp.blur(); });
     });
 
-    // P with its letters and with its numbers, then the counts with the reset button at their right.
+    // P with its letters and (unless numbers is false) its numbers, then the counts with the reset button at their right.
     var u = esc(o.unit);
     var cross = symHTML('ρ') + symHTML('σ_x') + symHTML('σ_y');
     var sym = '<span class="ell-m sym"><span>' + squareHTML('σ', 'x') + '</span><span>' + cross + '</span>' +
       '<span>' + cross + '</span><span>' + squareHTML('σ', 'y') + '</span></span>';
     var matrix = panel.appendChild(make('div', 'ell-matrix',
-      '<span class="sym"><i>P</i></span><span>=</span>' + sym + '<span>=</span>' +
-      '<span class="ell-m ell-num"><span></span><span></span><span></span><span></span></span><span>' + u + '²</span>'));
+      '<span class="sym"><i>P</i></span><span>=</span>' + sym + (o.numbers ? '<span>=</span>' +
+      '<span class="ell-m ell-num"><span></span><span></span><span></span><span></span></span><span>' + u + '²</span>' : '')));
     var cells = matrix.querySelectorAll('.ell-num > span');
     var bottom = panel.appendChild(make('div', 'ell-bottom'));
     var countBox = bottom.appendChild(make('div', 'ell-counts'));
     var counts = o.levels.map(function (k, j) {
-      var row = countBox.appendChild(make('div', 'ell-count', swatch(j) +
-        '<span>inside ' + fmt(k, 0) + 'σ: <span class="ell-n"></span> of ' + o.n + ' points — <span class="ell-pct"></span></span>'));
+      var row = countBox.appendChild(make('div', 'ell-count', swatch(j) + (o.numbers ?
+        '<span>inside ' + fmt(k, 0) + 'σ: <span class="ell-n"></span> of ' + o.n + ' points — <span class="ell-pct"></span></span>' :
+        '<span>inside ' + fmt(k, 0) + 'σ: <span class="ell-pct"></span> of the points</span>')));
       return { n: row.querySelector('.ell-n'), pct: row.querySelector('.ell-pct') };
     });
 
@@ -396,13 +399,15 @@
         labels[j].style.visibility = ly > f.T + 14 && ly < f.T + f.S - 4 ? 'visible' : 'hidden';
       });
       var P = cov(st);
-      cells[0].textContent = entry(P[0][0]);
-      cells[1].textContent = entry(P[0][1]);
-      cells[2].textContent = entry(P[1][0]);
-      cells[3].textContent = entry(P[1][1]);
+      if (cells.length) {
+        cells[0].textContent = entry(P[0][0]);
+        cells[1].textContent = entry(P[0][1]);
+        cells[2].textContent = entry(P[1][0]);
+        cells[3].textContent = entry(P[1][1]);
+      }
       last = o.levels.map(function (k) { return inside(errs, st, k); });
       counts.forEach(function (c, j) {
-        c.n.textContent = last[j];
+        if (c.n) c.n.textContent = last[j];
         c.pct.textContent = Math.round(100 * last[j] / o.n) + ' %';
       });
       outputs.sigmaX.textContent = fmt(st.sigmaX, 2) + ' ' + o.unit;
