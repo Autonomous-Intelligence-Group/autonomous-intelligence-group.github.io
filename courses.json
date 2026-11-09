@@ -57,6 +57,12 @@
         "title": "State Estimation and Fusion (II)",
         "pdf": "lecture-07-state-estimation-2.pdf",
         "topics": "Kalman gain · Covariance · EKF · robot_localization"
+      },
+      {
+        "num": 8,
+        "title": "Simultaneous Localization and Mapping",
+        "pdf": "lecture-08-slam.pdf",
+        "topics": "Mapping · Localization · SLAM · slam_toolbox"
       }
     ],
     "videos": {
@@ -67,7 +73,8 @@
       "4": "https://www.youtube.com/watch?v=J9UCOfLO-NA&list=PLBeDJyZEjxEo&index=5",
       "5": "https://www.youtube.com/watch?v=foSLMExJZCY&list=PLBeDJyZEjxEo&index=6",
       "6": "https://www.youtube.com/watch?v=ykK8Mai8lPY&list=PLBeDJyZEjxEo&index=7",
-      "7": "https://www.youtube.com/watch?v=XDL1-QdY8sc&list=PLBeDJyZEjxEo&index=8"
+      "7": "https://www.youtube.com/watch?v=XDL1-QdY8sc&list=PLBeDJyZEjxEo&index=8",
+      "8": "https://www.youtube.com/watch?v=vHcellQxVuU&list=PLBeDJyZEjxEo&index=9"
     }
   },
   {
@@ -150,6 +157,20 @@
         "sub": "Module III",
         "pdf": "ias-lec10-observation-models-2-slides.pdf",
         "topics": "Complementary filter · CF → KF cascade · Time of flight · SNR & detection · Matched filter · Resolution & pulse compression"
+      },
+      {
+        "num": 11,
+        "title": "Observation Models (III): Beam Model and GNSS",
+        "sub": "Module III",
+        "pdf": "ias-lec11-observation-models-3-slides.pdf",
+        "topics": "Beam model · Robust likelihood vs. gating · Monte Carlo localisation · GNSS pseudoranges, GDOP · RTK: differencing and measuring the carrier phase"
+      },
+      {
+        "num": 12,
+        "title": "Observation Models (IV): RTK and Radar",
+        "sub": "Module III",
+        "pdf": "ias-lec12-observation-models-4-slides.pdf",
+        "topics": "Carrier-phase measurement · Integer fixing · Two frequencies · Radar Doppler · Range–Doppler map · Velocity aliasing"
       }
     ],
     "videos": {
@@ -162,7 +183,9 @@
       "7": "https://www.youtube.com/watch?v=STXMjIUI7Vg&list=PLCwTF9SaVAuc&index=7",
       "8": "https://www.youtube.com/watch?v=5mzDwptxBvo&list=PLCwTF9SaVAuc&index=8",
       "9": "https://www.youtube.com/watch?v=cr-9mlYXisI&list=PLCwTF9SaVAuc&index=9",
-      "10": "https://www.youtube.com/watch?v=dZPNUrU0g48&list=PLCwTF9SaVAuc&index=10"
+      "10": "https://www.youtube.com/watch?v=dZPNUrU0g48&list=PLCwTF9SaVAuc&index=10",
+      "11": "https://www.youtube.com/watch?v=8RfQsm83Ds0&list=PLCwTF9SaVAuc&index=11",
+      "12": "https://www.youtube.com/watch?v=sJjipWJW9sE&list=PLCwTF9SaVAuc&index=12"
     }
   }
 ]

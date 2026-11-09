@@ -1,0 +1,64 @@
+/* The deck's look for the EKF-SLAM widget (ekf-slam-steps.js): the deck's colours — blue a prediction, red the lidar, purple
+   the estimate, brown the landmarks — the theme's DM Sans, text at 12 px and up. Linked from the slide that mounts the widget;
+   every rule stays under `section .esl`, so nothing leaks into the theme (a top-level rule would drop Marp to its default
+   theme). The widget has no <p>, <strong> or <em>, the elements the theme colours. */
+
+section .esl { font-family: 'DM Sans', system-ui, sans-serif; color: #222222; line-height: 1.2; margin-top: -4px; }
+section .esl svg text { font-family: 'DM Sans', system-ui, sans-serif; }
+section .esl-strip svg { display: block; }
+section .esl-main { display: grid; grid-template-columns: 400px 134px 299px 1fr; gap: 8px; align-items: start; margin-top: 2px; height: 331px; }
+section .esl-map { display: block; border: 1px solid #e4e4e4; }
+section .esl-cap { font-size: 13px; color: #555555; height: 17px; white-space: nowrap; }
+section .esl-state { font-size: 12px; }
+section .esl-rowhead { display: grid; grid-template-columns: 34px 1fr 50px; column-gap: 2px; padding: 0 3px; height: 14px; line-height: 14px; font-size: 12px; color: #555555; text-align: right; }
+section .esl-row { display: grid; grid-template-columns: 34px 1fr 50px; column-gap: 2px; align-items: center; padding: 0 3px; line-height: 14px; background: #f7f7f7; color: #666666; font-variant-numeric: tabular-nums; }
+section .esl-row b { font-weight: 500; text-align: right; }
+section .esl-row .sd { text-align: right; white-space: nowrap; }
+section .esl-row.sep { box-shadow: inset 0 1.5px 0 #ffffff; }
+section .esl sub { font-family: 'DM Sans', system-ui, sans-serif; font-size: 0.75em; font-style: normal; font-weight: 400; vertical-align: -0.25em; line-height: 0; }
+section .esl-row sub { font-size: 9px; vertical-align: -1px; }
+section .esl-l { font-family: 'STIX Two Math', 'STIX Two Text', 'Cambria Math', 'Times New Roman', serif; font-style: italic; font-weight: 400; }
+section .esl-row.on { color: #222222; }
+section .esl-row.on b { font-weight: 700; }
+section .esl-row.on.p { background: rgba(31, 119, 180, 0.24); }
+section .esl-row.on.u { background: rgba(123, 63, 160, 0.24); }
+section .esl-row.on.n { background: rgba(140, 86, 75, 0.24); }
+section .esl-pose { width: 134px; font-size: 12px; font-weight: 400; }
+section .esl-p { position: relative; }
+section .esl-p svg { display: block; }
+section .esl-tip { position: absolute; z-index: 5; background: #222222; color: #ffffff; font-size: 13px; line-height: 1.3; padding: 3px 7px; border-radius: 4px; white-space: nowrap; pointer-events: none; font-variant-numeric: tabular-nums; }
+section .esl-seen { grid-column: 1 / span 2; display: flex; gap: 8px; align-items: center; }
+section .esl-lens { flex: none; display: block; background: #f4f1ee; border-radius: 6px; }
+section .esl-seen .esl-sym { font-size: 15px; font-weight: 400; margin-right: 5px; }
+section .esl-panel { min-width: 0; font-size: 13px; }
+section .esl-head { font-size: 15px; color: #555555; margin-bottom: 3px; }
+section .esl-head b { font-weight: 700; font-size: 17px; }
+section .esl-head b.p { color: #1f77b4; }
+section .esl-head b.u { color: #d62728; }
+section .esl-head b.n { color: #8c564b; }
+section .esl-say { font-size: 13.5px; font-weight: 600; margin-bottom: 5px; }
+section .esl-body { display: grid; grid-template-columns: auto 1fr; column-gap: 8px; row-gap: 3px; align-items: baseline; }
+section .esl-sym { font-family: 'STIX Two Math', 'STIX Two Text', 'Cambria Math', 'Times New Roman', serif; font-size: 14px; font-style: italic; white-space: nowrap; color: #222222; }
+section .esl-sym.w { font-family: 'DM Sans', system-ui, sans-serif; font-size: 13px; font-style: normal; color: #555555; }
+section .esl-sym.r { color: #d62728; }
+section .esl-sym.p { color: #1f77b4; }
+section .esl-sym.e { color: #7b3fa0; }
+section .esl-sym.c { color: #8c564b; }
+section .esl-val { font-variant-numeric: tabular-nums; font-weight: 600; }
+section .esl-note { display: block; color: #555555; font-size: 12px; font-weight: 400; }
+section .esl-ctrl { display: grid; grid-template-columns: auto auto auto auto 1fr 108px; gap: 8px; align-items: center; margin-top: 4px; }
+section .esl-ctrl output { font-variant-numeric: tabular-nums; text-align: right; font-weight: 600; font-size: 15px; }
+section .esl .chip { font: 14px 'DM Sans', system-ui, sans-serif; color: #222222; background: transparent; border: 1px solid #c2c2c2; border-radius: 999px; padding: 3px 11px; cursor: pointer; }
+section .esl .esl-next { font: 600 14px 'DM Sans', system-ui, sans-serif; color: #ffffff; background: #7b3fa0; border: 0; border-radius: 999px; padding: 5px 15px; cursor: pointer; }
+section .esl-ctrl input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 22px; margin: 0; background: transparent; cursor: pointer; }
+section .esl-ctrl input[type="range"]::-webkit-slider-runnable-track { height: 6px; border-radius: 3px; background: linear-gradient(to right, #7b3fa0 calc(9px + (100% - 18px) * var(--f, 0.5)), #dddddd 0); }
+section .esl-ctrl input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; margin-top: -6px; border-radius: 50%; background: #7b3fa0; border: 2px solid #ffffff; box-shadow: 0 0 0 1px #7b3fa0; }
+section .esl-ctrl input[type="range"]::-moz-range-track { height: 6px; border-radius: 3px; background: #dddddd; }
+section .esl-ctrl input[type="range"]::-moz-range-progress { height: 6px; border-radius: 3px; background: #7b3fa0; }
+section .esl-ctrl input[type="range"]::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: #7b3fa0; border: 2px solid #ffffff; box-shadow: 0 0 0 1px #7b3fa0; }
+section .esl-ctrl input[type="range"]:focus { outline: none; }
+section .esl-ctrl input[type="range"]:focus-visible { outline: 2px solid #7b3fa0; outline-offset: 3px; }
+section .esl-legend { display: flex; justify-content: space-between; font-size: 12.5px; line-height: 16px; color: #444444; margin-top: 4px; }
+section .esl-legend .col { display: flex; flex-direction: column; }
+section .esl-legend .it { display: flex; align-items: center; gap: 6px; white-space: nowrap; height: 16px; }
+section .esl-legend svg { flex: none; display: block; }

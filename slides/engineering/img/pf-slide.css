@@ -1,0 +1,98 @@
+/* The deck's look for the particle filter widget (pf.js): the estimate's green, the lidar's red and the ink of deck 6
+   (src/viz/lecture-05/plots/style.py), the theme's DM Sans, text at 14 px and up. Linked from the slide that mounts
+   the widget; every rule stays under `section .pfw`, so nothing leaks into the theme (a top-level rule would drop
+   Marp to its default theme). The widget has no <p>, <strong> or <em>, the elements the theme colours. */
+
+section .pfw {
+  --est: #2ca02c;
+  --ink: #222222;
+  --scan: #d62728;
+  --muted: #555555;
+  --rule: #e4e4e4;
+  --bg: #ffffff;
+  --track: #dddddd;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 30px;
+  align-items: start;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  color: var(--ink);
+  line-height: 1.3;
+}
+section .pfw-plot svg { display: block; border: 1px solid var(--rule); }
+section .pfw svg text { font-family: 'DM Sans', system-ui, sans-serif; }
+section .pfw-panel { display: flex; flex-direction: column; gap: 16px; min-width: 0; font-size: 17px; }
+section .pfw-name { color: var(--muted); white-space: nowrap; }
+section .pfw-name i { font-family: 'STIX Two Math', 'STIX Two Text', 'Cambria Math', 'Times New Roman', serif; color: var(--ink); }
+
+section .pfw-slider { display: grid; grid-template-columns: auto 1fr 52px; align-items: center; gap: 12px; }
+section .pfw-slider output { font-variant-numeric: tabular-nums; text-align: right; font-weight: 600; }
+section .pfw-slider input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 22px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+}
+section .pfw-slider input[type="range"]::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(to right, var(--est) calc(9px + (100% - 18px) * var(--f, 0.5)), var(--track) 0);
+}
+section .pfw-slider input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  margin-top: -6px;
+  border-radius: 50%;
+  background: var(--est);
+  border: 2px solid var(--bg);
+  box-shadow: 0 0 0 1px var(--est);
+}
+section .pfw-slider input[type="range"]::-moz-range-track { height: 6px; border-radius: 3px; background: var(--track); }
+section .pfw-slider input[type="range"]::-moz-range-progress { height: 6px; border-radius: 3px; background: var(--est); }
+section .pfw-slider input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--est);
+  border: 2px solid var(--bg);
+  box-shadow: 0 0 0 1px var(--est);
+}
+section .pfw-slider input[type="range"]:focus { outline: none; }
+section .pfw-slider input[type="range"]:focus-visible { outline: 2px solid var(--est); outline-offset: 3px; }
+
+section .pfw-chips, section .pfw-buttons { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+section .pfw .chip {
+  font: 15px 'DM Sans', system-ui, sans-serif;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid #c2c2c2;
+  border-radius: 999px;
+  padding: 3px 12px;
+  cursor: pointer;
+}
+section .pfw .chip.on { border-color: var(--est); box-shadow: inset 0 0 0 1px var(--est); }
+section .pfw .pfw-main {
+  font: 600 16px 'DM Sans', system-ui, sans-serif;
+  color: #ffffff;
+  background: var(--est);
+  border: 0;
+  border-radius: 999px;
+  padding: 5px 16px;
+  cursor: pointer;
+  min-width: 170px;
+}
+/* The count of particles: the number the slide is about, large enough to read from the back of the room. */
+section .pfw-count { font-size: 17px; color: var(--muted); }
+section .pfw-count b { font-size: 40px; line-height: 1; font-weight: 700; color: var(--est); font-variant-numeric: tabular-nums; }
+section .pfw-count span { font-size: 14px; }
+section .pfw-info { display: grid; row-gap: 6px; font-size: 16px; }
+section .pfw-info b { font-weight: 600; font-variant-numeric: tabular-nums; }
+section .pfw-info i { font-family: 'STIX Two Math', 'STIX Two Text', 'Cambria Math', 'Times New Roman', serif; }
+/* The marks, as the deck's .legend: a grey column with a rule on its left. */
+section .pfw-legend { font-size: 14px; line-height: 1.45; color: var(--muted); border-left: 2px solid var(--rule); padding-left: 12px; }
+section .pfw-legend .k { font-weight: 600; }
