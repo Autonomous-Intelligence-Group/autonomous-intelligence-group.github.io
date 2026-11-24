@@ -185,7 +185,7 @@
        [icon('<path transform="translate(13 7) scale(6.5)" d="' + ARROW + '" fill="none" stroke="' + C.ink + '" stroke-width="0.16"/>'), 'ground truth']],
       [[icon(oval(13, 11, 5, C.cyl, 0.2, C.cyl, 1) + '<circle cx="13" cy="7" r="2.3" fill="' + C.cyl + '"/>'), 'landmark ' + lmHtml(0) + '; ellipse: 2σ of its <i>x</i>, <i>y</i>'],
        [icon('<circle cx="13" cy="7" r="5.5" fill="none" stroke="' + C.ink + '" stroke-width="0.9"/>'), 'real cylinder']],
-      [[lineIcon(C.scan, 2), 'reading <i>z</i>; <i>ẑ</i> — expected from the state'],
+      [[lineIcon(C.scan, 2), 'reading <i>z</i>; <i>ẑ</i> in the panel — expected from the state'],
        [icon(cell(0, 1) + cell(14, 0.25)), 'covariance <i>P</i>: darker, larger']],
       [[stepIcon(C.pred), 'predict'], [stepIcon(C.scan), 'update'], [stepIcon(C.cyl, true), 'new landmark']]
     ].forEach(function (items) {

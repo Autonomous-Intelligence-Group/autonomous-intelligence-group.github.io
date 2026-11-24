@@ -60,9 +60,15 @@
       },
       {
         "num": 8,
-        "title": "Simultaneous Localization and Mapping",
+        "title": "Simultaneous Localization and Mapping (I)",
         "pdf": "lecture-08-slam.pdf",
-        "topics": "Mapping · Localization · SLAM · slam_toolbox"
+        "topics": "Mapping · Localization · SLAM problem · EKF-SLAM · Lab 3"
+      },
+      {
+        "num": 9,
+        "title": "Simultaneous Localization and Mapping (II)",
+        "pdf": "lecture-09-slam.pdf",
+        "topics": "EKF-SLAM · Pose graph · Loop closure · slam_toolbox · Lab 3"
       }
     ],
     "videos": {
@@ -74,7 +80,8 @@
       "5": "https://www.youtube.com/watch?v=foSLMExJZCY&list=PLBeDJyZEjxEo&index=6",
       "6": "https://www.youtube.com/watch?v=ykK8Mai8lPY&list=PLBeDJyZEjxEo&index=7",
       "7": "https://www.youtube.com/watch?v=XDL1-QdY8sc&list=PLBeDJyZEjxEo&index=8",
-      "8": "https://www.youtube.com/watch?v=vHcellQxVuU&list=PLBeDJyZEjxEo&index=9"
+      "8": "https://www.youtube.com/watch?v=vHcellQxVuU&list=PLBeDJyZEjxEo&index=9",
+      "9": "https://www.youtube.com/watch?v=9bQjXGUG0X4&list=PLBeDJyZEjxEo&index=10"
     }
   },
   {
@@ -171,6 +178,27 @@
         "sub": "Module III",
         "pdf": "ias-lec12-observation-models-4-slides.pdf",
         "topics": "Carrier-phase measurement · Integer fixing · Two frequencies · Radar Doppler · Range–Doppler map · Velocity aliasing"
+      },
+      {
+        "num": 13,
+        "title": "Observation Models (V): Vision, from Geometry to Learning",
+        "sub": "Module III",
+        "pdf": "ias-lec13-observation-models-5-slides.pdf",
+        "topics": "Camera projection · Geometric vision: matching, triangulation, VO/SLAM · Learned representations and their use in a filter · Limits of observation"
+      },
+      {
+        "num": 14,
+        "title": "Planning by Search",
+        "sub": "Module IV",
+        "pdf": "ias-lec14-planning-by-search-slides.pdf",
+        "topics": "Planning as graph search · Dijkstra and dynamic programming · A* · Configuration space and sampling-based planning · Path vs. trajectory · Task and motion planning"
+      },
+      {
+        "num": 15,
+        "title": "Optimal Control (I): Dynamic Programming",
+        "sub": "Module IV",
+        "pdf": "ias-lec15-optimal-control-slides.pdf",
+        "topics": "The optimal control problem · Plans vs. policies · Admissible controls and existence · The Bellman recursion and verification · The curse of dimensionality"
       }
     ],
     "videos": {
@@ -185,7 +213,10 @@
       "9": "https://www.youtube.com/watch?v=cr-9mlYXisI&list=PLCwTF9SaVAuc&index=9",
       "10": "https://www.youtube.com/watch?v=dZPNUrU0g48&list=PLCwTF9SaVAuc&index=10",
       "11": "https://www.youtube.com/watch?v=8RfQsm83Ds0&list=PLCwTF9SaVAuc&index=11",
-      "12": "https://www.youtube.com/watch?v=sJjipWJW9sE&list=PLCwTF9SaVAuc&index=12"
+      "12": "https://www.youtube.com/watch?v=sJjipWJW9sE&list=PLCwTF9SaVAuc&index=12",
+      "13": "https://www.youtube.com/watch?v=M8qu-c3M5gs&list=PLCwTF9SaVAuc&index=13",
+      "14": "https://www.youtube.com/watch?v=x3jaw8IURes&list=PLCwTF9SaVAuc&index=14",
+      "15": "https://www.youtube.com/watch?v=FO2lmMqT93w&list=PLCwTF9SaVAuc&index=15"
     }
   }
 ]

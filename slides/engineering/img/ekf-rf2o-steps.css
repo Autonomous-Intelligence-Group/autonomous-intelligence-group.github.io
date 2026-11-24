@@ -1,0 +1,51 @@
+/* The deck's look for the EKF + rf2o widget (ekf-rf2o-steps.js), as the EKF-SLAM widget's (ekf-slam-steps.css): the deck's
+   colours — blue a predict, red an update and the lidar's scan now, purple the robot in the EKF, orange rf2o, grey what was
+   before — the theme's DM Sans, text at 12 px and up. Linked from the slide that mounts the widget; every rule stays under
+   `section .erf`, so nothing leaks into the theme (a top-level rule would drop Marp to its default theme). The widget has
+   no <p>, <strong> or <em>, the elements the theme colours. */
+
+section .erf { font-family: 'DM Sans', system-ui, sans-serif; color: #222222; line-height: 1.2; margin-top: -4px; }
+section .erf svg text { font-family: 'DM Sans', system-ui, sans-serif; }
+section .erf-strip svg { display: block; }
+section .erf-main { display: grid; grid-template-columns: 450px 1fr; gap: 16px; align-items: start; margin-top: 2px; }
+section .erf-map { display: block; border: 1px solid #e4e4e4; }
+section .erf-panel { min-width: 0; font-size: 13px; }
+section .erf-head { font-size: 15px; color: #555555; margin-bottom: 3px; }
+section .erf-head b { font-weight: 700; font-size: 17px; }
+section .erf-head b.p { color: #1f77b4; }
+section .erf-head b.u { color: #d62728; }
+section .erf-say { font-size: 13.5px; font-weight: 600; min-height: 34px; margin-bottom: 6px; }
+section .erf-table { display: grid; grid-template-columns: 104px repeat(3, 88px); font-size: 13px; font-variant-numeric: tabular-nums; }
+section .erf-table > div { padding: 0 6px; height: 17px; line-height: 17px; text-align: right; white-space: nowrap; background: #f7f7f7; color: #666666; }
+section .erf-table > div.l { text-align: left; color: #555555; background: transparent; padding-left: 0; }
+section .erf-table > div.h { background: transparent; font-weight: 700; }
+section .erf-table > div.h.b { color: #8a8a8a; }
+section .erf-table > div.h.o { color: #e8710a; }
+section .erf-table > div.h.a { color: #7b3fa0; }
+section .erf-table > div.sep { box-shadow: inset 0 1.5px 0 #ffffff; }
+section .erf-table > div.on { color: #222222; font-weight: 500; }
+section .erf-table > div.on.p { background: rgba(31, 119, 180, 0.24); font-weight: 700; }
+section .erf-table > div.on.u { background: rgba(123, 63, 160, 0.24); font-weight: 700; }
+section .erf-table > div.e { background: #fbfbfb; }
+section .erf-lensbox { display: flex; gap: 12px; align-items: center; margin-top: 10px; }
+section .erf-lens { flex: none; display: block; background: #f4f4f4; border-radius: 6px; }
+section .erf-note { display: grid; grid-template-columns: auto auto auto; column-gap: 10px; row-gap: 2px; align-items: baseline; font-size: 13px; color: #444444; font-variant-numeric: tabular-nums; }
+section .erf-note .nh { grid-column: 1 / span 3; color: #555555; margin-bottom: 2px; }
+section .erf-note b { font-weight: 700; color: #222222; }
+section .erf-ctrl { display: grid; grid-template-columns: auto auto auto auto 1fr 168px; gap: 8px; align-items: center; margin-top: 4px; }
+section .erf-ctrl output { font-variant-numeric: tabular-nums; text-align: right; font-weight: 600; font-size: 15px; white-space: nowrap; }
+section .erf .chip { font: 14px 'DM Sans', system-ui, sans-serif; color: #222222; background: transparent; border: 1px solid #c2c2c2; border-radius: 999px; padding: 3px 11px; cursor: pointer; white-space: nowrap; }
+section .erf .erf-play { min-width: 86px; }
+section .erf .erf-next { font: 600 14px 'DM Sans', system-ui, sans-serif; color: #ffffff; background: #7b3fa0; border: 0; border-radius: 999px; padding: 5px 15px; cursor: pointer; white-space: nowrap; }
+section .erf-ctrl input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 22px; margin: 0; background: transparent; cursor: pointer; }
+section .erf-ctrl input[type="range"]::-webkit-slider-runnable-track { height: 6px; border-radius: 3px; background: linear-gradient(to right, #7b3fa0 calc(9px + (100% - 18px) * var(--f, 0.5)), #dddddd 0); }
+section .erf-ctrl input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; margin-top: -6px; border-radius: 50%; background: #7b3fa0; border: 2px solid #ffffff; box-shadow: 0 0 0 1px #7b3fa0; }
+section .erf-ctrl input[type="range"]::-moz-range-track { height: 6px; border-radius: 3px; background: #dddddd; }
+section .erf-ctrl input[type="range"]::-moz-range-progress { height: 6px; border-radius: 3px; background: #7b3fa0; }
+section .erf-ctrl input[type="range"]::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: #7b3fa0; border: 2px solid #ffffff; box-shadow: 0 0 0 1px #7b3fa0; }
+section .erf-ctrl input[type="range"]:focus { outline: none; }
+section .erf-ctrl input[type="range"]:focus-visible { outline: 2px solid #7b3fa0; outline-offset: 3px; }
+section .erf-legend { display: flex; justify-content: space-between; font-size: 12.5px; line-height: 16px; color: #444444; margin-top: 4px; }
+section .erf-legend .col { display: flex; flex-direction: column; }
+section .erf-legend .it { display: flex; align-items: center; gap: 6px; white-space: nowrap; height: 16px; }
+section .erf-legend svg { flex: none; display: block; }

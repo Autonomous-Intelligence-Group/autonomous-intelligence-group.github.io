@@ -21,7 +21,7 @@ section .esl-l { font-family: 'STIX Two Math', 'STIX Two Text', 'Cambria Math', 
 section .esl-row.on { color: #222222; }
 section .esl-row.on b { font-weight: 700; }
 section .esl-row.on.p { background: rgba(31, 119, 180, 0.24); }
-section .esl-row.on.u { background: rgba(123, 63, 160, 0.24); }
+section .esl-row.on.u { background: rgba(214, 39, 40, 0.2); }
 section .esl-row.on.n { background: rgba(140, 86, 75, 0.24); }
 section .esl-pose { width: 134px; font-size: 12px; font-weight: 400; }
 section .esl-p { position: relative; }

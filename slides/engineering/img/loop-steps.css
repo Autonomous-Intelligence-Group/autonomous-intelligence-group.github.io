@@ -1,0 +1,108 @@
+/* The deck's look for the loop-closure widget (loop-steps.js): green the estimate (a node; this node's scan bright, the
+   earlier ones pale), black ground truth, grey the edges and the old nodes linked to the new one, orange the candidates of
+   the loop-closure check, red the loop edge (graph_plots.py); the strip under the slider as ekf-slam-steps.css's; the
+   theme's DM Sans, text at 12 px and up. Linked from the slide that mounts the widget; every rule stays under `section .lsw`,
+   so nothing leaks into the theme (a top-level rule would drop Marp to its default theme). The widget has no <p>, <strong> or
+   <em>, the elements the theme colours. */
+
+section .lsw {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 14px;
+  row-gap: 5px;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  color: #222222;
+  line-height: 1.25;
+  margin-top: -8px;
+}
+section .lsw svg text { font-family: 'DM Sans', system-ui, sans-serif; }
+section .lsw-map { display: block; border: 1px solid #e4e4e4; grid-row: 1; }
+section .lsw i { font-family: 'STIX Two Math', 'STIX Two Text', 'Cambria Math', 'Times New Roman', serif; font-style: italic; font-weight: 400; }
+section .lsw sub, section .lsw sup { font-family: 'DM Sans', system-ui, sans-serif; font-size: 0.72em; font-style: normal; line-height: 0; }
+section .lsw sub { vertical-align: -0.3em; }
+section .lsw sub i { font-size: 1.08em; }
+
+section .lsw-side { grid-column: 2; grid-row: 1; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+section .lsw-top { display: flex; align-items: flex-start; gap: 18px; height: 62px; }
+/* The node added: the number the widget steps through, large enough to read from the back of the room. */
+section .lsw-count { flex: none; width: 158px; white-space: nowrap; }
+section .lsw-count b { font-size: 40px; line-height: 1; font-weight: 700; color: #2ca02c; font-variant-numeric: tabular-nums; }
+section .lsw-count .w { font-size: 16px; color: #555555; }
+section .lsw-count .phase { font-size: 14px; font-weight: 600; color: #2ca02c; height: 17px; }
+section .lsw-memory { display: flex; gap: 14px; min-width: 0; }
+section .lsw-memory > div { display: flex; flex-direction: column; width: 152px; }
+section .lsw-memory .m { font-size: 13px; color: #555555; white-space: nowrap; }
+section .lsw-memory .m b { font-size: 24px; line-height: 1.05; font-weight: 700; color: #222222; font-variant-numeric: tabular-nums; }
+section .lsw-memory span { font-size: 12px; color: #666666; line-height: 1.25; }
+
+section .lsw-mid { display: flex; gap: 12px; align-items: flex-start; height: 244px; }
+section .lsw-panel { flex: 1; min-width: 0; font-size: 13.5px; }
+section .lsw-head { font-size: 14px; color: #555555; margin-bottom: 4px; white-space: nowrap; }
+section .lsw-head b { font-size: 16px; font-weight: 700; color: #222222; }
+section .lsw-head b.g { color: #2ca02c; }
+section .lsw-cols { display: flex; gap: 26px; }
+section .lsw-grid { display: grid; grid-template-columns: auto auto; column-gap: 9px; row-gap: 1px; align-items: baseline; justify-content: start; }
+section .lsw-grid .cap { grid-column: 1 / -1; font-size: 12px; color: #555555; margin-bottom: 1px; }
+section .lsw-grid .k { color: #555555; white-space: nowrap; }
+section .lsw-grid .k.in { padding-left: 14px; }
+section .lsw-grid .sub { grid-column: 1 / -1; color: #555555; margin-top: 2px; }
+section .lsw .pw { font-size: 12px; color: #666666; }
+section .lsw-grid .v { font-variant-numeric: tabular-nums; }
+section .lsw-grid .v b { font-weight: 700; }
+section .lsw-grid .v .n { color: #666666; font-size: 12px; }
+section .lsw-grid .k.o, section .lsw-grid .v.o { color: #e8710a; }
+section .lsw-grid .k.gr, section .lsw-grid .v.gr { color: #777777; }
+section .lsw-grid .k.r, section .lsw-grid .v.r { color: #d62728; }
+section .lsw-grid .v.o .n, section .lsw-grid .v.gr .n, section .lsw-grid .v.r .n { color: inherit; opacity: 0.85; }
+section .lsw-table { display: grid; grid-template-columns: auto auto auto auto; column-gap: 16px; row-gap: 1px; margin-top: 5px; justify-content: start; font-variant-numeric: tabular-nums; }
+section .lsw-table div { text-align: right; white-space: nowrap; }
+section .lsw-table div:nth-child(4n + 1) { text-align: left; }
+section .lsw-table .h { font-size: 12px; color: #555555; border-bottom: 1px solid #e4e4e4; }
+section .lsw-table .r { color: #d62728; font-weight: 600; }
+section .lsw-table .n { color: #666666; font-size: 12px; }
+section .lsw-say { font-size: 13px; font-weight: 600; margin-top: 6px; }
+/* The loop-closure check, under what the step made: what Karto's search came to. */
+section .lsw-check { margin-top: 8px; }
+section .lsw-check > .cap { font-size: 12px; color: #555555; margin-bottom: 1px; white-space: nowrap; }
+section .lsw sub.w { font-size: 0.8em; }
+section .lsw-note { font-size: 12.5px; color: #555555; margin-top: 6px; }
+section .lsw-note b { color: #222222; font-variant-numeric: tabular-nums; }
+section .lsw-lens { flex: none; }
+/* Two lines kept for the caption, so the square does not jump when, after the loop, the second names the grey scans. */
+section .lsw-lens .cap { font-size: 12px; color: #555555; height: 30px; line-height: 15px; white-space: nowrap; }
+section .lsw-lens svg { display: block; outline: 1.3px solid #555555; }
+section .lsw-ate .cap { font-size: 12.5px; color: #555555; }
+section .lsw-ate .two { display: flex; gap: 22px; font-size: 14px; color: #777777; }
+section .lsw-ate .two b { font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums; }
+section .lsw-ate .two .sel { color: #222222; }
+section .lsw-ate .two .sel b { font-weight: 700; }
+
+section .lsw-ctrl { grid-column: 1 / -1; display: grid; grid-template-columns: auto auto auto auto 1fr auto; column-gap: 8px; row-gap: 4px; align-items: center; }
+/* Under the slider the strip, a cell per step, each under the slider's position for it (its margins set by the widget);
+   beside it, under the buttons, what its colours mean. */
+section .lsw-kinds { grid-column: 1 / 5; position: relative; align-self: stretch; }
+section .lsw-kinds > div { position: absolute; right: 0; top: 0; bottom: 0; display: flex; align-items: center; gap: 10px; font-size: 12px; line-height: 14px; color: #444444; white-space: nowrap; }
+section .lsw-kinds .kd { display: flex; align-items: center; gap: 4px; }
+section .lsw-kinds .sq { display: block; width: 11px; height: 11px; }
+section .lsw-strip { grid-column: 5; display: flex; height: 13px; cursor: pointer; touch-action: none; }
+section .lsw-strip .cell { flex: 1 1 0; margin: 0 0.5px; }
+section .lsw-strip .cell.cur { position: relative; z-index: 1; box-shadow: 0 0 0 2px #222222; }
+section .lsw-strip.off { opacity: 0.3; }
+section .lsw .chip { font: 14px 'DM Sans', system-ui, sans-serif; color: #222222; background: transparent; border: 1px solid #c2c2c2; border-radius: 999px; padding: 3px 11px; cursor: pointer; }
+section .lsw .lsw-next { font: 600 14px 'DM Sans', system-ui, sans-serif; color: #ffffff; background: #2ca02c; border: 0; border-radius: 999px; padding: 5px 16px; cursor: pointer; }
+section .lsw-switch { display: flex; align-items: center; gap: 6px; font-size: 14px; white-space: nowrap; cursor: pointer; }
+section .lsw-switch input { width: 16px; height: 16px; margin: 0; accent-color: #555555; cursor: pointer; }
+section .lsw-ctrl input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 22px; margin: 0; background: transparent; cursor: pointer; }
+section .lsw-ctrl input[type="range"]::-webkit-slider-runnable-track { height: 6px; border-radius: 3px; background: linear-gradient(to right, #2ca02c calc(9px + (100% - 18px) * var(--f, 0.5)), #dddddd 0); }
+section .lsw-ctrl input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; margin-top: -6px; border-radius: 50%; background: #2ca02c; border: 2px solid #ffffff; box-shadow: 0 0 0 1px #2ca02c; }
+section .lsw-ctrl input[type="range"]::-moz-range-track { height: 6px; border-radius: 3px; background: #dddddd; }
+section .lsw-ctrl input[type="range"]::-moz-range-progress { height: 6px; border-radius: 3px; background: #2ca02c; }
+section .lsw-ctrl input[type="range"]::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: #2ca02c; border: 2px solid #ffffff; box-shadow: 0 0 0 1px #2ca02c; }
+section .lsw-ctrl input[type="range"]:focus { outline: none; }
+section .lsw-ctrl input[type="range"]:focus-visible { outline: 2px solid #2ca02c; outline-offset: 3px; }
+/* The marks, in columns: an icon drawn as on the map, a few words. */
+section .lsw-legend { grid-column: 1 / -1; display: flex; justify-content: space-between; font-size: 12.5px; line-height: 16px; color: #444444; }
+section .lsw-legend .col { display: flex; flex-direction: column; }
+section .lsw-legend .it { display: flex; align-items: center; gap: 6px; white-space: nowrap; height: 16px; }
+section .lsw-legend svg { flex: none; display: block; }

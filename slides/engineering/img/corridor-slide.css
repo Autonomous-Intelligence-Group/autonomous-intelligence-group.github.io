@@ -1,0 +1,88 @@
+/* The deck's look for the corridor widget (corridor.js): green the estimate, grey odometry, red the loop edge and what x₃'s scan
+   saw, black what x₀'s scan saw (src/viz/slam/tikz/toy-1d-corridor.tex), the theme's DM Sans, text at 12.5 px and up. Linked
+   from the slide that mounts the widget; every rule stays under `section .crw`, so nothing leaks into the theme (a top-level
+   rule would drop Marp to its default theme). The widget has no <p>, <strong> or <em>, the elements the theme colours. */
+
+section .crw {
+  --est: #2ca02c;
+  --ink: #222222;
+  --red: #d62728;
+  --muted: #555555;
+  --track: #dddddd;
+  display: grid;
+  grid-template-columns: 690px 1fr;
+  grid-template-rows: auto 1fr;
+  column-gap: 22px;
+  align-items: start;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  color: var(--ink);
+  line-height: 1.25;
+  margin-top: -6px;
+}
+section .crw-pic { grid-row: 1 / span 2; }
+section .crw-pic svg { display: block; }
+section .crw svg text { font-family: 'DM Sans', system-ui, sans-serif; }
+section .crw-panel { grid-column: 2; display: flex; flex-direction: column; gap: 9px; min-width: 0; font-size: 15px; }
+section .crw i { font-family: 'STIX Two Math', 'STIX Two Text', 'Cambria Math', 'Times New Roman', serif; font-style: italic; }
+section .crw sub { font-family: 'DM Sans', system-ui, sans-serif; font-size: 0.72em; font-style: normal; vertical-align: -0.3em; line-height: 0; }
+
+section .crw-slider { display: grid; grid-template-columns: 214px 1fr 46px; align-items: center; gap: 10px; }
+section .crw-name { display: flex; flex-direction: column; line-height: 1.2; }
+section .crw-sym { font-size: 16px; white-space: nowrap; }
+section .crw-words { font-size: 12.5px; color: var(--muted); white-space: nowrap; }
+section .crw-slider output { font-variant-numeric: tabular-nums; text-align: right; font-weight: 600; white-space: nowrap; }
+section .crw-slider input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 22px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+}
+section .crw-slider input[type="range"]::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(to right, var(--est) calc(9px + (100% - 18px) * var(--f, 0.5)), var(--track) 0);
+}
+section .crw-slider input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  margin-top: -6px;
+  border-radius: 50%;
+  background: var(--est);
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 0 1px var(--est);
+}
+section .crw-slider input[type="range"]::-moz-range-track { height: 6px; border-radius: 3px; background: var(--track); }
+section .crw-slider input[type="range"]::-moz-range-progress { height: 6px; border-radius: 3px; background: var(--est); }
+section .crw-slider input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--est);
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 0 1px var(--est);
+}
+section .crw-slider input[type="range"]:focus { outline: none; }
+section .crw-slider input[type="range"]:focus-visible { outline: 2px solid var(--est); outline-offset: 3px; }
+
+/* The line that says in words what the widget does. */
+section .crw-what { font-size: 13px; color: var(--muted); line-height: 1.35; }
+section .crw .chip {
+  align-self: flex-start;
+  font: 14px 'DM Sans', system-ui, sans-serif;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid #c2c2c2;
+  border-radius: 999px;
+  padding: 3px 12px;
+  cursor: pointer;
+}
+/* The marks, in columns: an icon drawn as on the picture, a few words. */
+section .crw-legend { grid-column: 2; align-self: end; display: flex; gap: 18px; flex-wrap: wrap; font-size: 12.5px; line-height: 17px; color: #444444; margin-top: 6px; }
+section .crw-legend .col { display: flex; flex-direction: column; }
+section .crw-legend .it { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+section .crw-legend svg { flex: none; display: block; }
